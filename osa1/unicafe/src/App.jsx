@@ -12,15 +12,35 @@ const Statistics = ({good, neutral, bad}) => {
   const positivePercantage = good / total * 100
   if (good || bad || neutral) {
     return (
-      <div>
-        <h1>statistics</h1>
-        <p>good {good}</p>
-        <p>neutral {neutral}</p>
-        <p>bad {bad}</p>
-        <p>all {total}</p>
-        <p>avarage {avarage}</p>
-        <p>positive {(isNaN(positivePercantage)) ? 0 : positivePercantage} %</p>
-      </div>
+      <table>
+        <thead>
+          <tr>
+            <td colSpan="2"><h1>statistics</h1></td>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>good</td>
+            <td>{good}</td>
+          </tr>
+          <tr>
+            <td>neutral</td>
+            <td>{neutral}</td>
+          </tr>
+          <tr>
+            <td>bad</td>
+            <td>{bad}</td>
+          </tr>
+          <tr>
+            <td>avarage</td>
+            <td>{avarage}</td>
+          </tr>
+          <tr>
+            <td>positive</td>
+            <td>{positivePercantage} %</td>
+          </tr>
+        </tbody>        
+      </table>
     )
   } else {
     return ( 
