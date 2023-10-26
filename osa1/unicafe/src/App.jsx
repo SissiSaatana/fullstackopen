@@ -7,12 +7,18 @@ const Button = ({handleClick, text}) => {
 }
 
 const Display = ({good, neutral, bad}) => {
+  const total = good + neutral + bad
+  const avarage = (good - bad) / total;
+  const positivePercantage = good / total * 100
   return (
     <div>
       <h1>statistics</h1>
       <p>good {good}</p>
       <p>neutral {neutral}</p>
       <p>bad {bad}</p>
+      <p>all {total}</p>
+      <p>{(!isNaN(avarage)) ? 'avarage ' + avarage : 'the monkeys are unable to provide valid avarage, pls provide good or bad bananas'}</p>
+      <p>positive {(isNaN(positivePercantage)) ? 0 : positivePercantage} %</p>
     </div>
   )
 }
