@@ -6,9 +6,16 @@ const Button = ({handleClick, text}) => {
   )
 }
 
-const AnecdoteVotes = ({votes}) => { 
+const AnecdoteVotes = ({votes}) => <p>has {votes} votes</p>
+
+const HighestVotedAnecdote = ({anecdotes, votes}) => {
+  const highestVotedAnecdote = anecdotes[votes.indexOf(Math.max(...votes))]
+  console.log(highestVotedAnecdote)
   return (
-    <p>has {votes} votes</p>
+    <>
+      <h1>Anecdote with most votes</h1>
+      <p>{highestVotedAnecdote}</p>
+    </>
   )
 }
 
@@ -23,7 +30,7 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.',
     'The monkeys work better if given good bananas',
-    'If it works it works, but the monkeys prefer well formatted bananas that passes linting'
+    'If it works it works, but the monkeys prefer well formatted bananas that passes linting requirements'
   ]
   
   //const points = Array(anecdotes.length).fill(0)
@@ -49,6 +56,7 @@ const App = () => {
       <Button handleClick={getNewTimelessTruth} text='next anecdote' />
       <p>{anecdotes[selected]}</p>
       <AnecdoteVotes votes={points[selected]} />
+      <HighestVotedAnecdote anecdotes={anecdotes} votes={points} />
     </div>
   )
 }
