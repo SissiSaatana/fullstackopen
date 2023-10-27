@@ -1,7 +1,8 @@
-const Course = ({course}) => 
+const Course = ({courses}) => 
   <>
-    <Header courseName={course.name}/>
-    <Content parts={course.parts} />
+    {courses.map(course =>                        
+      <Content key={course.id} parts={course.parts} header={course.name} />      
+    )}    
   </>  
 
 
@@ -10,10 +11,11 @@ const Header = ({courseName}) => <h1>{courseName}</h1>
 
 
 
-const Content = ({parts}) => 
+const Content = ({parts, header}) => 
   <>
+    <Header courseName={header} />
     {parts.map(part => 
-      (<Part key={part.id} name={part.name} exercises={part.exercises}/>)
+      <Part key={part.id} name={part.name} exercises={part.exercises}/>
     )}
     <Total parts={parts} />
   </>
@@ -33,44 +35,68 @@ const Total = ({parts}) =>
 
 
 const App = () => {
-  const course = {
-    id: 1,
-    name: 'Half Stack application development',
-    parts: [
-      {
-        name: 'Fundamentals of React',
-        exercises: 10,
-        id: 1
-      },
-      {
-        name: 'Using props to pass data',
-        exercises: 7,
-        id: 2
-      },
-      {
-        name: 'State of a component',
-        exercises: 14,
-        id: 3
-      },
-      {
-        name: 'Fundamentals of the banana',
-        exercises: 10,
-        id: 4
-      },
-      {
-        name: 'Writin programs for bananas',
-        exercises: 1,
-        id: 5
-      },
-      {
-        name: 'State of the banana',
-        exercises: 14,
-        id: 6
-      }
-    ]
-  }
+  const courses = [
+    {
+      id: 1,
+      name: 'Half Stack application development',
+      parts: [
+        {
+          name: 'Fundamentals of React',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Using props to pass data',
+          exercises: 7,
+          id: 2
+        },
+        {
+          name: 'State of a component',
+          exercises: 14,
+          id: 3
+        }
+      ]
+    },
+    {
+      name: 'Node.js',
+      id: 2,
+      parts: [
+        {
+          name: 'Routing',
+          exercises: 3,
+          id: 1
+        },
+        {
+          name: 'Middlewares',
+          exercises: 7,
+          id: 2
+        }
+      ]
+    },
+    {
+      name: 'Developing stack of bananas',
+      id: 3,
+      parts: [
+        {
+          name: 'Fundamentals of the banana',
+          exercises: 10,
+          id: 1
+        },
+        {
+          name: 'Writin programs for bananas',
+          exercises: 1,
+          id: 2
+        },
+        {
+          name: 'State of the banana',
+          exercises: 14,
+          id: 3
+        }
+      ]
+    }
+  ]
 
-  return <Course course={course} />
+  return <Course courses={courses} />
 }
 
 export default App
