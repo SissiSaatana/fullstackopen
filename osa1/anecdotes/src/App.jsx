@@ -6,6 +6,11 @@ const Button = ({handleClick, text}) => {
   )
 }
 
+const AnecdoteVotes = ({votes}) => { 
+  return (
+    <p>has {votes} votes</p>
+  )
+}
 
 const App = () => {
   const anecdotes = [
@@ -21,20 +26,29 @@ const App = () => {
     'If it works it works, but the monkeys prefer well formatted bananas that passes linting'
   ]
   
-  console.log(anecdotes.length)
+  //const points = Array(anecdotes.length).fill(0)
 
   const [selected, setSelected] = useState(0)
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
 
   const getRandomInt = (max) => Math.floor(Math.random() * max)
 
   const getNewTimelessTruth = () => setSelected(getRandomInt(anecdotes.length))
 
+  const vote = (selected) => {
+    const newPoints = [...points]
+    newPoints[selected]++
+    setPoints(newPoints)
+  }
+
   // setSelected(getRandomInt(anecdotes.length))
 
   return (
     <div>
+      <Button handleClick={() => vote(selected)} text='vote' /> 
       <Button handleClick={getNewTimelessTruth} text='next anecdote' />
       <p>{anecdotes[selected]}</p>
+      <AnecdoteVotes votes={points[selected]} />
     </div>
   )
 }
