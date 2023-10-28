@@ -9,13 +9,23 @@ const App = () => {
   
   const addPerson = (event) => {
     event.preventDefault()
-    console.log('form submitted: ', event.target)
-    const newPerson = { name: newName }
-    setPersons(persons.concat(newPerson))
+
+    if (checkIfAlreadyExist(newName)) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const newPerson = { name: newName }
+      setPersons(persons.concat(newPerson))
+    }
   }
 
   const handleNameChange = (event) => 
     setNewName(event.target.value)
+
+  const checkIfAlreadyExist = (name) => {
+    const found = persons.findIndex((element) => element.name === name);
+    console.log('found: ', found)
+    return (found == -1) ? false : true
+  }
   
 
   return (
