@@ -7,7 +7,7 @@ const DisplayContacts = ({contacts}) => {
     <>
       <h1>Numbers</h1>
       {contacts.map(contact => 
-        (<p>{contact.name}</p>)
+        (<p key={contact.name}>{contact.name}</p>)
       )}
     </>
   )
@@ -21,15 +21,23 @@ const App = () => {
 
   const addName = (event) => {
     event.preventDefault()
-    const newPerson = {
-      name: newName
+    if (checkForDuplicates() != -1) {
+      alert(`${newName} is already added to phonebook`)
+    } else {
+      const newPerson = {
+        name: newName
+      }
+      setPersons(persons.concat(newPerson))
+      setNewName('')
     }
-    setPersons(persons.concat(newPerson))
-    setNewName('')
   }
 
   const handleNameChange = (event) => {
     setNewName(event.target.value)
+  }
+
+  const checkForDuplicates = () => {  
+    return (persons.findIndex(person => person.name == newName))
   }
 
   return (
