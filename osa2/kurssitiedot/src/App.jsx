@@ -49,7 +49,7 @@ const App = () => {
           id: 1
         },
         {
-          name: 'Writin programs for bananas',
+          name: 'Writing programs for bananas',
           exercises: 1,
           id: 2
         },
