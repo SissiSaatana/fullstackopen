@@ -25,10 +25,8 @@ const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumber
 }
 
 const DisplayContacts = ({contacts, filterWith}) => {
-  console.log(contacts)  
   const result = contacts.filter((person) => 
       person.name.toLowerCase().includes(filterWith.toLowerCase()))
-  console.log('result', result)
   return (
     <>
       <h1>Numbers</h1>
@@ -75,21 +73,17 @@ const App = () => {
     }    
   }
 
-  const handleNameChange = (event) => {
+  const handleNameChange = (event) =>
     setNewName(event.target.value)
-  }
 
-  const handleNumberChange = (event) => {
+  const handleNumberChange = (event) =>
     setNewNumber(event.target.value)
-  }
 
-  const filterChange = (filterWith) => {
+  const filterChange = (filterWith) =>
     setFilterWithStr(filterWith)
-  }
 
-  const checkForDuplicates = () => {  
-    return (persons.findIndex(person => person.name.toLowerCase() == newName))
-  }
+  const checkForDuplicates = () => 
+    persons.findIndex(person => person.name.toLowerCase() == newName)
 
 
   return (
