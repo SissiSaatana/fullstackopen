@@ -7,7 +7,7 @@ const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumber
         name: 
         <input 
           value={newName}
-          onChange={(e) => handleNameChange(e)}  
+          onChange={(e) => handleNameChange(e)}
         />
       </div>
       <div>
@@ -25,13 +25,14 @@ const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumber
 }
 
 const DisplayContacts = ({contacts, filterWith}) => {
-  const result = contacts.filter((person) => 
-      person.name.toLowerCase().includes(filterWith.toLowerCase()))
+  console.log(contacts);
+  const result = contacts.filter(person =>
+    person.name.toLowerCase().includes(filterWith.toLowerCase()))
   return (
     <>
       <h1>Numbers</h1>
       {result.map(contact => 
-        (<p key={contact.name}>{contact.name} {contact.number}</p>)
+        <p key={contact.name}>{contact.name} {contact.number}</p>
       )}
     </>
   )
@@ -48,7 +49,7 @@ const FilterPersons = ({handleFilterChange}) =>
 
 const App = () => {
   const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456' },    
+    { name: 'Arto Hellas', number: '040-123456' },
     { name: 'Ada Lovelace', number: '39-44-5323523' },
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
