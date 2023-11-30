@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
@@ -24,12 +24,15 @@ const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumber
   )
 }
 
-const DisplayContacts = ({contacts}) => {
+const DisplayContacts = ({contacts, filterWith}) => {
   console.log(contacts)  
+  const result = contacts.filter((person) => 
+      person.name.toLowerCase().includes(filterWith.toLowerCase()))
+  console.log('result', result)
   return (
     <>
       <h1>Numbers</h1>
-      {contacts.map(contact => 
+      {result.map(contact => 
         (<p key={contact.name}>{contact.name} {contact.number}</p>)
       )}
     </>
@@ -52,17 +55,9 @@ const App = () => {
     { name: 'Dan Abramov', number: '12-43-234345' },
     { name: 'Mary Poppendieck', number: '39-23-6423122' }
   ])
-  const [filteredPersons, setFilteredPersons] = useState(persons)
   const [filterWithStr, setFilterWithStr] = useState('') 
   const [newName, setNewName] = useState('')
   const [newNumber, setNewNumber] = useState('')
-
-  useEffect(() => {
-    console.log('useEffect')
-    console.log(persons)
-    filterChange(filterWithStr)
-  })
-
 
   const addName = (event) => {
     event.preventDefault()
@@ -76,7 +71,7 @@ const App = () => {
       
       setNewName('')
       setNewNumber('')
-      setPersons(persons.concat(newPerson))      
+      setPersons(persons.concat(newPerson))
     }    
   }
 
@@ -89,16 +84,13 @@ const App = () => {
   }
 
   const filterChange = (filterWith) => {
-    console.log('persons', persons)
-    const result = persons.filter((person) => 
-      person.name.toLowerCase().includes(filterWith.toLowerCase()))
-    setFilteredPersons(result)
     setFilterWithStr(filterWith)
   }
 
   const checkForDuplicates = () => {  
     return (persons.findIndex(person => person.name.toLowerCase() == newName))
   }
+
 
   return (
     <div>
@@ -111,10 +103,9 @@ const App = () => {
         handleNumberChange={handleNumberChange}
         newNumber={newNumber}
       />      
-      <DisplayContacts contacts={filteredPersons} />
+      <DisplayContacts contacts={persons} filterWith={filterWithStr} />
     </div>
   )
-
 }
 
 export default App
