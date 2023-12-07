@@ -26,7 +26,7 @@ const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumb
   )
 }
 
-const DisplayContacts = ({contacts, filterWith}) => {
+const DisplayContacts = ({contacts, remove, filterWith}) => {
   console.log(contacts);
   const result = (contacts.length) ? contacts.filter(person =>
     person.name.toLowerCase().includes(filterWith.toLowerCase())) : [];
@@ -34,7 +34,10 @@ const DisplayContacts = ({contacts, filterWith}) => {
     <>
       <h1>Numbers</h1>
       {result.map(contact => 
-        <p key={contact.name}>{contact.name} {contact.number}</p>
+        <p key={contact.name}>
+          {contact.name} {contact.number}
+          <button onClick={() => remove(contact.id)}>Poista</button>
+        </p>
       )}
     </>
   )
@@ -69,14 +72,24 @@ const App = () => {
 
   const addPerson = (event) => {
     event.preventDefault()
-    if (checkForDuplicates() != -1) {
-      alert(`${newName} is already added to phonebook`)
-    } else {
-      const newPerson = {
-        name: newName,
-        number: newNumber
+    const newPerson = {
+      name: newName,
+      number: newNumber
+    }
+    const duplicateIndex = checkForDuplicates()
+
+    if (duplicateIndex != -1) {
+      if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
+        personService
+          .update(persons[duplicateIndex].id, newPerson)
+          .then(rPerson => {
+            setPersons(persons.filter(p => p.id != persons[duplicateIndex].id).concat(rPerson))
+          })
+          .catch(e => {
+            alert(`updating person ${newName} failed with error: ${e}`)
+          })
       }
-      
+    } else {      
       personService
         .create(newPerson)
         .then(rPerson => {
@@ -102,6 +115,23 @@ const App = () => {
   const checkForDuplicates = () => 
     persons.findIndex(person => person.name.toLowerCase() == newName)
 
+  const removePerson = id => {
+    const personToBeRemoved = persons.find(p => p.id === id)
+
+    if (window.confirm(`Delete ${personToBeRemoved.name} ?`)) {
+      personService
+        .remove(id)
+        .then(data => {
+          console.log(data)
+          setPersons(persons.filter(person =>
+            person.id != id)) 
+        })
+        .catch(error => {
+          console.log('error:', error)
+        })
+    }    
+  }
+
 
   return (
     <div>
@@ -114,7 +144,11 @@ const App = () => {
         handleNumberChange={handleNumberChange}
         newNumber={newNumber}
       />      
-      <DisplayContacts contacts={persons} filterWith={filterWithStr} />
+      <DisplayContacts 
+        contacts={persons}
+        remove={removePerson}
+        filterWith={filterWithStr}
+      />
     </div>
   )
 }
