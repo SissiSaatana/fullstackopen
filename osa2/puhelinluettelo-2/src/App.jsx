@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react'
 import axios from 'axios'
 
-const PersonForm = ({addName, newName, handleNameChange, newNumber, handleNumberChange}) => {
+const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
-    <form onSubmit={addName}>
+    <form onSubmit={addPerson}>
       <div>
         name: 
         <input 
@@ -61,9 +61,12 @@ const App = () => {
     
     axios.get('http://localhost:3001/persons')
       .then(eventHandler)
+      .catch(error => {
+        alert(`We are unable request initial data from the server: "${error}"`)
+      })
   }, []);
 
-  const addName = (event) => {
+  const addPerson = (event) => {
     event.preventDefault()
     if (checkForDuplicates() != -1) {
       alert(`${newName} is already added to phonebook`)
@@ -97,7 +100,7 @@ const App = () => {
       <h2>Phonebook</h2>
       <FilterPersons handleFilterChange={filterChange}/>
       <PersonForm 
-        addName={addName}
+        addPerson={addPerson}
         handleNameChange={handleNameChange}
         newName={newName}
         handleNumberChange={handleNumberChange}
