@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import personService from './services/persons'
 import axios from 'axios'
 
 const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
@@ -56,13 +57,13 @@ const App = () => {
 
 
   useEffect(() => {
-    const eventHandler = response => 
-      setPersons(response.data)
-    
-    axios.get('http://localhost:3001/persons')
-      .then(eventHandler)
+    personService
+      .getAll()
+      .then(initialPersons => {
+        setPersons(initialPersons)
+      })
       .catch(error => {
-        alert(`We are unable request initial data from the server: "${error}"`)
+        alert(`Failed to retrieve initial state from the server: ${error}`)
       })
   }, []);
 
@@ -76,9 +77,16 @@ const App = () => {
         number: newNumber
       }
       
-      setNewName('')
-      setNewNumber('')
-      setPersons(persons.concat(newPerson))
+      personService
+        .create(newPerson)
+        .then(rPerson => {
+          setNewName('')
+          setNewNumber('')
+          setPersons(persons.concat(rPerson))
+        })
+        .catch(error => {
+          alert(`Failed to add ${newName} to server: ${error}`)
+        })      
     }    
   }
 
