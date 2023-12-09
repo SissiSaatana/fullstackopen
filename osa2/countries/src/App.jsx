@@ -1,15 +1,7 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/country'
 
-const FindCountry = ({handleSearchChange}) =>
-  <div>
-    Find countries
-    <input
-      onChange={(e) => handleSearchChange(e.target.value)}
-    />
-  </div>
-
-const RenderResults = ({searchResults}) => {
+const RenderResults = ({searchResults, showSingle}) => {
   const resultLength = searchResults.length;
   switch (true) {
     case (resultLength === 0):
@@ -21,9 +13,14 @@ const RenderResults = ({searchResults}) => {
     case (resultLength <= 10):
       return (
         <>
-          {searchResults.map((country, i) =>
-            <p key={i}>{country.name.common}</p>
-          )}
+          {searchResults.map((country, i) => {
+            return (
+                <p  key={i}>
+                  {country.name.common}
+                  <button onClick={()=>showSingle(country)}>Show</button>
+                </p>
+            )
+          })}
         </>
       )
     case (resultLength > 10):
@@ -33,21 +30,24 @@ const RenderResults = ({searchResults}) => {
   }
 }
 
+const FindCountry = ({handleSearchChange}) =>
+  <div>
+    Find countries
+    <input
+      onChange={(e) => handleSearchChange(e.target.value)}
+    />
+  </div>
 
-const RenderCountry = ({country}) => {
-  // const mapped = Object.entries(map).map(([k,v]) => `${k}_${v}`);
-  return (
-    <div>
-      <h2>{country.name.common}</h2>
-      <p>Capital: {country.capital[0]}</p>
-      <p>Area: {country.area}</p>
-      <ul>
-        {Object.entries(country.languages).map(([k,v]) => <li key={k}>{v}</li>)}
-      </ul>
-      <img src={country.flags['png']} />
-    </div>
-  )
-}
+const RenderCountry = ({country}) => 
+  <div>
+    <h2>{country.name.common}</h2>
+    <p>Capital: {country.capital[0]}</p>
+    <p>Area: {country.area}</p>
+    <ul>
+      {Object.entries(country.languages).map(([k,v]) => <li key={k}>{v}</li>)}
+    </ul>
+    <img src={country.flags['png']} />
+  </div>
 
 
 function App() {
@@ -73,10 +73,14 @@ function App() {
     setSearchResults(result)
   }
 
+  const showSingle = (country) => 
+    setSearchResults([country])
+  
+
   return (
     <>
       <FindCountry handleSearchChange={searchCountries}/>
-      <RenderResults searchResults={searchResults} />
+      <RenderResults searchResults={searchResults} showSingle={showSingle}/>
     </>
   )
 }
