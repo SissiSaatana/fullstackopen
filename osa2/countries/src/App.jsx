@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import countryService from './services/country'
+import weatherService from './services/weather'
 
 const RenderResults = ({searchResults, showSingle}) => {
   const resultLength = searchResults.length;
@@ -38,17 +39,21 @@ const FindCountry = ({handleSearchChange}) =>
     />
   </div>
 
-const RenderCountry = ({country}) => 
-  <div>
-    <h2>{country.name.common}</h2>
-    <p>Capital: {country.capital[0]}</p>
-    <p>Area: {country.area}</p>
-    <ul>
-      {Object.entries(country.languages).map(([k,v]) => <li key={k}>{v}</li>)}
-    </ul>
-    <img src={country.flags['png']} />
-  </div>
+const RenderCountry = ({country}) => {
+  weatherService.getWeather(country.latlng[0], country.latlng[1])
 
+  return (
+    <div>
+      <h2>{country.name.common}</h2>
+      <p>Capital: {country.capital[0]}</p>
+      <p>Area: {country.area}</p>
+      <ul>
+        {Object.entries(country.languages).map(([k,v]) => <li key={k}>{v}</li>)}
+      </ul>
+      <img src={country.flags['png']} />
+    </div>
+  )
+}
 
 function App() {
   const [searchResults, setSearchResults] = useState([])
