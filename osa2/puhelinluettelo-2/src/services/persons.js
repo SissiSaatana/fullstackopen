@@ -8,7 +8,12 @@ const getAll = () => {
 
 const create = newPerson => {
     const request = axios.post(baseUrl, newPerson)
-    return request.then(response => response.data)
+    
+    return request.then(response => {
+        console.log('response.data', response.data)
+        console.log('response', response)
+        return response.data
+    })
 }
 
 const update = (id, newPerson) => {

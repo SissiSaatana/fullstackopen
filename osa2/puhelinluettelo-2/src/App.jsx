@@ -100,7 +100,6 @@ const App = () => {
   }, []);
 
   const addPerson = (event) => {
-    event.preventDefault()
     const newPerson = {
       name: newName,
       number: newNumber
@@ -134,7 +133,9 @@ const App = () => {
           setFeedbackMsg({msg:`Failed to add ${newName} to server. Error: ${error}`, type:'error'});
           timeoutFeedbackMsg();
         })      
-    }    
+    }
+    
+    event.preventDefault()    
   }
 
   const handleNameChange = (event) =>
