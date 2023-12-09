@@ -54,6 +54,15 @@ app.get('/api/persons/:id', (req, res) => {
     res.status(404).end()
 })
 
+app.post('/api/persons', (req, res) => {
+  console.log(req)
+  const person = req.body.person
+  person.id = Math.floor(Math.random() * 99999)
+  console.log(person)
+  persons.push(person)
+  res.status(204).end()
+})
+
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   const person = persons.find(p => p.id ===id)
