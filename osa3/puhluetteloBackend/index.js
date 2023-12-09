@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 app.use(express.json())
+app.use(express.static('dist'))
 
 var morgan = require('morgan')
 morgan.token('body', (req, res) => JSON.stringify(req.body.person))
@@ -93,7 +94,7 @@ app.get('/info', (req, res) => {
   `)
 })
 
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
