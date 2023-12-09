@@ -70,7 +70,8 @@ app.post('/api/persons', (req, res) => {
   } else {
     person.id = Math.floor(Math.random() * 99999)
     persons.push(person)
-    res.status(204).end()
+    res.status(204)
+    res.json(person)
   }
 })
 
