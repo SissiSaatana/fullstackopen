@@ -108,3 +108,6 @@ const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
+
+
+// mongodb+srv://SissiSaatana:8wq2tPF6l7Z8R7bS@fso.uycnwk2.mongodb.net/?retryWrites=true&w=majority
