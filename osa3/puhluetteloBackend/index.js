@@ -60,6 +60,8 @@ app.get('/api/persons/:id', (req, res) => {
 
 app.post('/api/persons', (req, res) => {
   const person = req.body
+  console.log(req)
+  console.log(req.body)
   if (!person.name || !person.number) {
     res.status(400)
     res.json({ error: 'missing name or number' })
