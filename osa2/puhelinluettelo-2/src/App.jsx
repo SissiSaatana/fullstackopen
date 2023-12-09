@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import personService from './services/persons'
-import axios from 'axios'
+
 
 const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumberChange}) => {
   return (
@@ -43,6 +43,34 @@ const DisplayContacts = ({contacts, remove, filterWith}) => {
   )
 }
 
+const FeedbackMsg = ({msg}) => {
+  let msgStyle;
+
+  if (msg.msg === '') 
+    return;
+  
+  if (msg.type ==='success') {
+    msgStyle = {
+      border: '2px solid green',
+      borderRadius: '5px',
+      color: 'green',
+      fontSize: 16,
+      padding: '.4em'
+    }
+  } else if (msg.type ==='error') {
+    msgStyle = {
+      border: '2px solid red',
+      color: 'red',
+      fontSize: 16,
+      padding: '.4em'
+    }
+  }
+  
+  return (
+    <p style={msgStyle}>{msg.msg}</p>
+  )
+}
+
 const FilterPersons = ({handleFilterChange}) =>
   <div>
     filter shown with
@@ -54,9 +82,10 @@ const FilterPersons = ({handleFilterChange}) =>
 
 const App = () => {
   const [persons, setPersons] = useState([])
-  const [filterWithStr, setFilterWithStr] = useState('')
   const [newName, setNewName] = useState('')
-  const [newNumber, setNewNumber] = useState('')
+  const [newNumber, setNewNumber] = useState('')  
+  const [filterWithStr, setFilterWithStr] = useState('')
+  const [feedbackMsg, setFeedbackMsg] = useState({msg: '', type: ''})  
 
 
   useEffect(() => {
@@ -84,9 +113,11 @@ const App = () => {
           .update(persons[duplicateIndex].id, newPerson)
           .then(rPerson => {
             setPersons(persons.filter(p => p.id != persons[duplicateIndex].id).concat(rPerson))
+            setFeedbackMsg({msg:`Updated person ${rPerson.name}`, type:'success'});
+            timeoutFeedbackMsg();
           })
-          .catch(e => {
-            alert(`updating person ${newName} failed with error: ${e}`)
+          .catch(error => {
+            setFeedbackMsg({msg:`updating person ${newName} failed. Error: ${error}`, type:'error'});
           })
       }
     } else {      
@@ -96,9 +127,12 @@ const App = () => {
           setNewName('')
           setNewNumber('')
           setPersons(persons.concat(rPerson))
+          setFeedbackMsg({msg:`Added person ${rPerson.name}`, type:'success'});
+          timeoutFeedbackMsg();
         })
         .catch(error => {
-          alert(`Failed to add ${newName} to server: ${error}`)
+          setFeedbackMsg({msg:`Failed to add ${newName} to server. Error: ${error}`, type:'error'});
+          timeoutFeedbackMsg();
         })      
     }    
   }
@@ -115,6 +149,12 @@ const App = () => {
   const checkForDuplicates = () => 
     persons.findIndex(person => person.name.toLowerCase() == newName)
 
+  const timeoutFeedbackMsg = () => 
+    setTimeout(() => {
+      setFeedbackMsg({msg: '', type: ''})
+    }, 5000)
+  
+
   const removePerson = id => {
     const personToBeRemoved = persons.find(p => p.id === id)
 
@@ -122,12 +162,15 @@ const App = () => {
       personService
         .remove(id)
         .then(data => {
-          console.log(data)
           setPersons(persons.filter(person =>
             person.id != id)) 
+          setFeedbackMsg({msg:`Removed person ${personToBeRemoved.name}`, type:'success'});
+          timeoutFeedbackMsg();
         })
         .catch(error => {
           console.log('error:', error)
+          setFeedbackMsg({msg:`Failed to remove person ${personToBeRemoved.name}. Error: ${error}`, type:'error'});
+          timeoutFeedbackMsg();
         })
     }    
   }
@@ -136,6 +179,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <FeedbackMsg msg={feedbackMsg} />
       <FilterPersons handleFilterChange={filterChange}/>
       <PersonForm 
         addPerson={addPerson}
