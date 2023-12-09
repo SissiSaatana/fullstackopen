@@ -28,8 +28,14 @@ const PersonForm = ({addPerson, newName, handleNameChange, newNumber, handleNumb
 
 const DisplayContacts = ({contacts, remove, filterWith}) => {
   console.log(contacts);
-  const result = (contacts.length) ? contacts.filter(person =>
-    person.name.toLowerCase().includes(filterWith.toLowerCase())) : [];
+  let result;
+    if (contacts.length) {
+      result = contacts.filter(person =>
+        person.name.toLowerCase().includes(filterWith.toLowerCase()))
+    } else {
+      result = [];
+    } 
+     
   return (
     <>
       <h1>Numbers</h1>
