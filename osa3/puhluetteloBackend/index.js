@@ -75,6 +75,14 @@ app.post('/api/persons', (req, res) => {
   }
 })
 
+app.put('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const newNumber = req.body.number;
+  const pIndex = persons.findIndex(p => p.id === id);
+  persons[pIndex].number = newNumber;
+  res.json(persons[pIndex])
+})
+
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   const person = persons.find(p => p.id ===id)
