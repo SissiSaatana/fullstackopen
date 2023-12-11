@@ -122,7 +122,7 @@ const App = () => {
             timeoutFeedbackMsg();
           })
           .catch(error => {
-            setFeedbackMsg({msg:`updating person ${newName} failed. Error: ${error} and Error response ${error.response.data}`, type:'error'});
+            setFeedbackMsg({msg:`updating person ${newName} failed. Error: ${error} and Error response ${error.response.data.error}`, type:'error'});
           })
       }
     } else {      
@@ -180,7 +180,7 @@ const App = () => {
         .catch(error => {
           console.log('error:', error)
           console.log('error response data:', error.response.data)
-          setFeedbackMsg({msg:`Failed to remove person ${personToBeRemoved.name}. Error: ${error}`, type:'error'});
+          setFeedbackMsg({msg:`Failed to remove person ${personToBeRemoved.name}. Error: ${error.response.data.error}`, type:'error'});
           timeoutFeedbackMsg();
         })
     }    
