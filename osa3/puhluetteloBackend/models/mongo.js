@@ -32,15 +32,4 @@ if (person.name && person.phone) {
     result.forEach(p => console.log(`${p.name} ${p.phone}`))
     mongoose.connection.close()
   })
-  
 }
-
-// const note = new Note({
-//   content: 'HTML is Easy',
-//   important: true,
-// })
-
-// note.save().then(result => {
-//   console.log('note saved!')
-//   mongoose.connection.close()
-// })

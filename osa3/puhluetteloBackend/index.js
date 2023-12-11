@@ -1,3 +1,5 @@
+require('dotenv').config()  
+
 const express = require('express')
 const app = express()
 app.use(express.json())
@@ -7,90 +9,68 @@ var morgan = require('morgan')
 morgan.token('body', (req, res) => JSON.stringify(req.body))
 app.use(morgan(':method :url :status :res[content-length] - :response-time ms :body'))
 
+const Persons = require('./models/persons')
 
-let persons = [
-  {
-    "name": "Arto Hellas",
-    "number": "040-123456",
-    "id": 1
-  },
-  {
-    "name": "Ada Lovelace",
-    "number": "39-44-5323523",
-    "id": 2
-  },
-  {
-    "name": "Dan Abramov",
-    "number": "12-43-234345",
-    "id": 3
-  },
-  {
-    "name": "Mary Poppendieck",
-    "number": "39-23-6423122",
-    "id": 4
-  },
-  {
-    "name": "mymy",
-    "number": "112",
-    "id": 5
-  },
-  {
-    "name": "jymy",
-    "number": "911",
-    "id": 6
-}
-]
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
 app.get('/api/persons', (req, res) => {
-  res.json(persons)
+  Persons.find({}).then(p => res.json(p))
 })
 
 app.get('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id ===id)
-  if (person) 
-    res.json(person)
-  else 
-    res.status(404).end()
+  const id = req.params.id
+  Persons.find({ _id:id }).then(p => res.json(p))
 })
 
 app.post('/api/persons', (req, res) => {
   const person = req.body
   console.log('req.body', req.body)
+  
   if (!person.name || !person.number) {
     res.status(400)
     res.json({ error: 'missing name or number' })
-  } else if (persons.find(p => p.name === person.name)) {
-    res.status(405)
-    res.json({error: 'name must be unique'})
-  } else {
-    person.id = Math.floor(Math.random() * 99999)
-    persons.push(person)
-    res.status(201)
-    res.json(person)
+    return
   }
+
+  Persons.find({ name:person.name }).then(p => {
+    if (p.length) {
+      console.log('pls give unique name!')
+      res.status(405)
+      res.json({error: 'name must be unique'})    
+    } else {
+      const postPerson = new Persons(person)
+      postPerson.save().then(result => {
+        res.status(201)
+        res.json(result)
+      })
+    }
+  })
 })
 
 app.put('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const newNumber = req.body.number;
-  const pIndex = persons.findIndex(p => p.id === id);
-  persons[pIndex].number = newNumber;
-  res.json(persons[pIndex])
+  const person = req.body
+  Persons.findByIdAndUpdate(req.params.id, person, { new: true})
+    .then(updatedPerson => {
+      res.json(updatedPerson)
+    })
+    .catch(e => console.log(e))
+
+  // const newNumber = req.body.number;
+  // const pIndex = persons.findIndex(p => p.id === id);
+  // persons[pIndex].number = newNumber;
+  // res.json(persons[pIndex])
 })
 
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
-  const person = persons.find(p => p.id ===id)
-  persons = persons.filter(p => p.id !== id)
-  if (person) 
-    res.status(204).end()
-  else 
-    res.status(404).end()
+  Persons.findByIdAndDelete(req.params.id)
+    .then(result => res.status(204).end())
+    .catch(error => {
+      console.log(`error deleting user with id: ${req.params.id}. Error msg: ${error}`)
+      return res.status(404).end()
+    })    
 })
 
 
@@ -104,10 +84,7 @@ app.get('/info', (req, res) => {
   `)
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`)
 })
-
-
-// mongodb+srv://SissiSaatana:8wq2tPF6l7Z8R7bS@fso.uycnwk2.mongodb.net/?retryWrites=true&w=majority

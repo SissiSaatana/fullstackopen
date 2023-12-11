@@ -3,7 +3,11 @@ const baseUrl = '/api/persons'
 
 const getAll = () => {
     const request = axios.get(baseUrl)
-    return request.then(response => response.data)
+    return request.then(response => {
+        console.log('response', response)
+        console.log('response.data', response.data)
+        return response.data
+    })
 }
 
 const create = newPerson => {

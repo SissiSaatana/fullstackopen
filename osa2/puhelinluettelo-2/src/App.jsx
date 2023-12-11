@@ -154,7 +154,8 @@ const App = () => {
     setFilterWithStr(filterWith)
 
   const checkForDuplicates = () => 
-    persons.findIndex(person => person.name.toLowerCase() == newName)
+    persons.findIndex(person => person.name.toLowerCase() == newName.toLowerCase())
+    
 
   const timeoutFeedbackMsg = () => 
     setTimeout(() => {
