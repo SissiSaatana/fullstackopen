@@ -122,7 +122,7 @@ const App = () => {
             timeoutFeedbackMsg();
           })
           .catch(error => {
-            setFeedbackMsg({msg:`updating person ${newName} failed. Error: ${error}`, type:'error'});
+            setFeedbackMsg({msg:`updating person ${newName} failed. Error: ${error} and Error response ${error.response.data}`, type:'error'});
           })
       }
     } else {      
@@ -135,8 +135,10 @@ const App = () => {
           setFeedbackMsg({msg:`Added person ${rPerson.name}`, type:'success'});
           timeoutFeedbackMsg();
         })
-        .catch(error => {
-          setFeedbackMsg({msg:`Failed to add ${newName} to server. Error: ${error}`, type:'error'});
+        .catch(error =>   {
+          console.log(`frontEnd error: ${error}`)
+          console.log('error response data:', error.response.data)
+          setFeedbackMsg({msg:`Failed to add ${newName} to server. Error: ${error.response.data.error}`, type:'error'});
           timeoutFeedbackMsg();
         })      
     }
@@ -177,6 +179,7 @@ const App = () => {
         })
         .catch(error => {
           console.log('error:', error)
+          console.log('error response data:', error.response.data)
           setFeedbackMsg({msg:`Failed to remove person ${personToBeRemoved.name}. Error: ${error}`, type:'error'});
           timeoutFeedbackMsg();
         })

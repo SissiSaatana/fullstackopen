@@ -25,7 +25,7 @@ app.get('/api/persons/:id', (req, res) => {
   Persons.find({ _id:id }).then(p => res.json(p))
 })
 
-app.post('/api/persons', (req, res) => {
+app.post('/api/persons', (req, res, next) => {
   const person = req.body
   console.log('req.body', req.body)
   
@@ -41,18 +41,19 @@ app.post('/api/persons', (req, res) => {
       res.status(405)
       res.json({error: 'name must be unique'})    
     } else {
-      const postPerson = new Persons(person)
-      postPerson.save().then(result => {
-        res.status(201)
-        res.json(result)
-      })
+      new Persons(person).save()
+        .then(result => {
+          res.status(201)
+          res.json(result)
+        })
+        .catch(e => next(e))
     }
   })
 })
 
 app.put('/api/persons/:id', (req, res, next) => {
   const person = req.body
-  Persons.findByIdAndUpdate(req.params.id, person, { new: true})
+  Persons.findByIdAndUpdate(req.params.id, person, { new: true, runValidators: true, context: 'query' })
     .then(updatedPerson => {
       res.json(updatedPerson)
     })
@@ -77,17 +78,19 @@ app.get('/info', (req, res) => {
 })
 
 
-const unknownEndpoint = (request, response) => {
-  response.status(404).send({ error: 'unknown endpoint' })
+const unknownEndpoint = (req, res) => {
+  res.status(404).send({ error: 'unknown endpoint' })
 }
 app.use(unknownEndpoint)
 
 
-const errorHandler = (error, request, response, next) => {
-  console.error(error.message)
+const errorHandler = (error, req, res, next) => {
+  console.error('error.message', error.message)
 
   if (error.name === 'CastError')
-    return response.status(400).send({ error: 'malformatted id' })  
+    return res.status(400).send({ error: 'malformatted id' })  
+  else if (error.name === 'ValidationError')
+    return res.status(400).json({ error: error.message })
 
   next(error)
 }
