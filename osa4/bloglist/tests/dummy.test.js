@@ -15,6 +15,30 @@ const blogs = [
     title: 'Mymy',
     author: 'Jymy',
     url: 'http://www.jymy.com',
+    likes: 100,
+    __v: 0,
+  },
+  {
+    _id: '5a422ba71b54a676234d1ef8',
+    title: 'Mymy',
+    author: 'Jymy',
+    url: 'http://www.jymy.com',
+    likes: 99,
+    __v: 0,
+  },
+  {
+    _id: '5a422ea71b54a676234d1ef8',
+    title: 'Mymy',
+    author: 'Jymy',
+    url: 'http://www.jymy.com',
+    likes: 99,
+    __v: 0,
+  },
+  {
+    _id: '5a422as71b54a676234d1ef8',
+    title: 'Mymy',
+    author: 'Jymy',
+    url: 'http://www.jymy.com',
     likes: 99,
     __v: 0,
   },
@@ -58,6 +82,14 @@ const blogs = [
     likes: 2,
     __v: 0,
   },
+  {
+    _id: '5a422bc61b54a676124d17fc',
+    title: 'Typeee wars',
+    author: 'Robert C. Martin',
+    url: 'http://blog.cleancoder.com/uncle-bob/2016/05/01/TypeWars.html',
+    likes: 2,
+    __v: 0,
+  },
 ]
 
 test('dummy returns one', () => {
@@ -76,14 +108,22 @@ describe('total likes', () => {
     expect(result).toBe(blogs[0].likes)
   })
 
-  test('total likes', () => {
+  test('list total likes', () => {
     const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(133)
+    expect(result).toBe(433)
   })
+})
 
-  
+describe('checking for most liked blog', () => {
   test('most liked blog', () => {
     const result = listHelper.favoriteBlog(blogs)
     expect(result).toEqual(blogs[1])
+  })
+})
+
+describe('checking for author with most blogs', () => {
+  test('author with most blogs and blog count', () => {
+    const result = listHelper.mostBlogs(blogs)
+    expect(result).toEqual({ author: 'Robert C. Martin', blogCount: 4 })
   })
 })

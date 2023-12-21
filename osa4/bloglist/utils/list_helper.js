@@ -13,8 +13,19 @@ const favoriteBlog = blogs => {
   return blogs.find(blog => blog.likes === maxLikes);
 }
 
+const mostBlogs = blogs => [...new Set(blogs.map(blog => blog.author))]
+  .map(a => {
+    const authorAndBlogCount = {
+      author: a,
+      blogCount: blogs.filter(blog => blog.author === a).length,
+    }
+    return authorAndBlogCount
+  }).reduce((prev, current) => ((prev && prev.blogCount > current.blogCount)
+    ? prev : current));
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
+  mostBlogs,
 }
