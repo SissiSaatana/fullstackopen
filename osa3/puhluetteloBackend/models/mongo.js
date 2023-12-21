@@ -1,12 +1,12 @@
 const mongoose = require('mongoose')
 
-if (process.argv.length<3) {
+if (process.argv.length < 3) {
   console.log('give password as argument')
   process.exit(1)
 }
 
 const password = process.argv[2]
-const url =`mongodb+srv://SissiSaatana:${password}@fso.uycnwk2.mongodb.net/?retryWrites=true&w=majority`
+const url = `mongodb+srv://SissiSaatana:${password}@fso.uycnwk2.mongodb.net/?retryWrites=true&w=majority`
 
 mongoose.set('strictQuery', false)
 mongoose.connect(url)
