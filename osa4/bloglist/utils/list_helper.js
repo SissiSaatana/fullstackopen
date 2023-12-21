@@ -23,9 +23,20 @@ const mostBlogs = blogs => [...new Set(blogs.map(blog => blog.author))]
   }).reduce((prev, current) => ((prev && prev.blogCount > current.blogCount)
     ? prev : current));
 
+const mostLikes = blogs => [...new Set(blogs.map(blog => blog.author))]
+  .map(a => {
+    const authorAndBlogCount = {
+      author: a,
+      likes: blogs.filter(blog => blog.author === a)
+        .reduce((prev, cur) => prev + cur.likes, 0),
+    }
+    return authorAndBlogCount
+  }).reduce((prev, current) => ((prev && prev.likes > current.likes) ? prev : current));
+
 module.exports = {
   dummy,
   totalLikes,
   favoriteBlog,
   mostBlogs,
+  mostLikes,
 }
