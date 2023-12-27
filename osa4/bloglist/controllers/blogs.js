@@ -46,14 +46,31 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 })
 
-blogsRouter.delete('/:id', async (req, res) => {
-  const blog = await Blog.findByIdAndDelete(req.params.id)
-  console.log(blog)
-  if (blog === null) {
-    res.status(204).json(blog)
-    return
+blogsRouter.delete('/:id', async (req, res, next) => {
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (!decodedToken.id) {
+      return res.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
+    const blog = await Blog.findById(req.params.id)
+
+    if (blog === null) {
+      return res.status(204).json(blog)
+    }
+
+    if (blog.user.toString() === user._id.toString()) {
+      user.blogs = user.blogs.filter(b => b.toString() !== blog._id.toString())
+      await Blog.findByIdAndDelete(blog._id)
+      await user.save()
+    } else {
+      return res.status(403).json(blog)
+    }
+
+    res.status(200).json(blog)
+  } catch (error) {
+    next(error)
   }
-  res.status(200).json(blog)
 })
 
 module.exports = blogsRouter
