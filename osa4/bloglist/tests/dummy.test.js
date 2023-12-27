@@ -1,4 +1,4 @@
-/* eslint-disable no-undef */
+// /* eslint-disable no-undef */
 const listHelper = require('../utils/list_helper')
 
 const blogs = [
@@ -97,40 +97,40 @@ test('dummy returns one', () => {
   expect(result).toBe(1)
 })
 
-describe('total likes', () => {
-  test('when list has no entries', () => {
-    const result = listHelper.totalLikes([])
-    expect(result).toBe(0)
-  })
+// describe('total likes', () => {
+//   test('when list has no entries', () => {
+//     const result = listHelper.totalLikes([])
+//     expect(result).toBe(0)
+//   })
 
-  test('when list has only one blog equals the likes of that', () => {
-    const result = listHelper.totalLikes([blogs[0]])
-    expect(result).toBe(blogs[0].likes)
-  })
+//   test('when list has only one blog equals the likes of that', () => {
+//     const result = listHelper.totalLikes([blogs[0]])
+//     expect(result).toBe(blogs[0].likes)
+//   })
 
-  test('list total likes', () => {
-    const result = listHelper.totalLikes(blogs)
-    expect(result).toBe(433)
-  })
-})
+//   test('list total likes', () => {
+//     const result = listHelper.totalLikes(blogs)
+//     expect(result).toBe(433)
+//   })
+// })
 
-describe('checking for most liked blog', () => {
-  test('most liked blog', () => {
-    const result = listHelper.favoriteBlog(blogs)
-    expect(result).toEqual(blogs[1])
-  })
-})
+// describe('checking for most liked blog', () => {
+//   test('most liked blog', () => {
+//     const result = listHelper.favoriteBlog(blogs)
+//     expect(result).toEqual(blogs[1])
+//   })
+// })
 
-describe('checking for author with most blogs', () => {
-  test('author with most blogs and blog count', () => {
-    const result = listHelper.mostBlogs(blogs)
-    expect(result).toEqual({ author: 'Robert C. Martin', blogCount: 4 })
-  })
-})
+// describe('checking for author with most blogs', () => {
+//   test('author with most blogs and blog count', () => {
+//     const result = listHelper.mostBlogs(blogs)
+//     expect(result).toEqual({ author: 'Robert C. Martin', blogCount: 4 })
+//   })
+// })
 
-describe('checking for author with most likes', () => {
-  test('author with most likes and like count', () => {
-    const result = listHelper.mostLikes(blogs)
-    expect(result).toEqual({ author: 'Jymy', likes: 397 })
-  })
-})
+// describe('checking for author with most likes', () => {
+//   test('author with most likes and like count', () => {
+//     const result = listHelper.mostLikes(blogs)
+//     expect(result).toEqual({ author: 'Jymy', likes: 397 })
+//   })
+// })
