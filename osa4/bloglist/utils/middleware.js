@@ -1,5 +1,7 @@
 /* eslint-disable no-else-return */
+const jwt = require('jsonwebtoken')
 const logger = require('./logger')
+const User = require('../models/user')
 
 const requestLogger = (request, response, next) => {
   logger.info('Method:', request.method)
@@ -7,6 +9,21 @@ const requestLogger = (request, response, next) => {
   logger.info('Body:  ', request.body)
   logger.info('---')
   next()
+}
+
+const userExtractor = async (req, res, next) => {
+  try {
+    const decodedToken = jwt.verify(req.token, process.env.SECRET)
+    if (!decodedToken.id) {
+      res.status(401).json({ error: 'token invalid' })
+      next()
+    }
+    const user = await User.findById(decodedToken.id)
+    req.user = user
+    next()
+  } catch(error) {
+    next(error)
+  }
 }
 
 const tokenExtractor = (req, res, next) => {
@@ -37,6 +54,7 @@ const errorHandler = (error, request, response, next) => {
 }
 
 module.exports = {
+  userExtractor,
   tokenExtractor,
   requestLogger,
   unknownEndpoint,
