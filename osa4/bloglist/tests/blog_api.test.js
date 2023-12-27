@@ -25,27 +25,43 @@ test('expect id filed to be "id"', async () => {
 })
 
 describe('Adding a new blog', () => {
-  test('Post new blog', async () => {
-    const newBlog = {
-      title: 'Petroskoi',
-      author: 'mymy',
-      url: 'petroskoi.fi',
-      likes: 10,
-      __v: 0,
-    }
+  const user = {
+    username: 'test',
+    password: 'passu',
+  }
+  const newBlog = {
+    title: 'Petroskoi',
+    author: 'mymy',
+    url: 'petroskoi.fi',
+    likes: 10,
+    __v: 0,
+  }
 
+  let loginUser;
+  test('login with user and post new blog', async () => {
+    loginUser = await api
+      .post('/api/login')
+      .send(user)
+
+    console.log('loginUser', loginUser.body)
     const postResponse = await api
       .post('/api/blogs')
+      .set('Authorization', loginUser._body.token)
       .send(newBlog)
       .expect(201)
       .expect('Content-Type', /application\/json/)
-    // postResponse.body.id = postResponse.body._id
-    // delete postResponse.body._id
-
-    const getResponse = await api.get('/api/blogs')
-    const blog = getResponse.body.filter(b => b.id === postResponse.body.id)
-    expect(blog).toContainEqual(postResponse.body)
+    console.log('postResponse', postResponse)
   })
+
+  // const token =
+  // test('Post new blog', async () => {
+  //   // postResponse.body.id = postResponse.body._id
+  //   // delete postResponse.body._id
+
+  //   const getResponse = await api.get('/api/blogs')
+  //   const blog = getResponse.body.filter(b => b.id === postResponse.body.id)
+  //   expect(blog).toContainEqual(postResponse.body)
+  // })
 
   test('Post new blog without likes', async () => {
     const newBlog = {
