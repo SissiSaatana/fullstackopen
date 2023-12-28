@@ -3,10 +3,12 @@ import { Blog, NewBlogForm } from './components/Blog'
 import Login from './components/Login'
 import blogService from './services/blogsService'
 import loginService from './services/loginService'
+import FeedbackMsg from './components/FeedbackMsg'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
   const [user, setUser] = useState()
+  const [feedbackMsg, setFeedbackMsg] = useState({msg: '', type: ''})  
 
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem('loggedNoteappUser'))
@@ -27,7 +29,11 @@ const App = () => {
       setupUser(result)
 
     } catch (ex) {
-      console.log('exception: ', ex)      
+      console.log('exception: ', ex)
+      setFeedbackMsg({ 
+        msg: `Wrong username or password`,
+        type: 'error'
+      }) 
     }    
   }
 
@@ -60,17 +66,35 @@ const App = () => {
       }
       const result = await blogService.postNewBlog(newBlog)
       setBlogs(blogs.concat(result))
+      setFeedbackMsg({ 
+        msg: `a new blog ${newBlog.title} posted succesfully`,
+        type: 'success'
+      })
     } catch (ex) {
       console.log('exception: ', ex)
+      setFeedbackMsg({ 
+        msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
+        type: 'error'
+      })
     }
-    
   }
 
+  const timeoutFeedbackMsg = () => 
+    setTimeout(() => {
+      setFeedbackMsg({msg: '', type: ''})
+    }, 5000)
+
   if (blogs === undefined || blogs.length == 0) {
-    return <Login user={user} login={e => login(e)} logout={() => logout()} />
+    return (
+      <>
+        <FeedbackMsg msg={feedbackMsg} />
+        <Login user={user} login={e => login(e)} logout={() => logout()} />
+      </>
+    )
   } else {
     return (
       <div>
+        <FeedbackMsg msg={feedbackMsg} />
         <Login user={user} login={(e) => login(e)} logout={() => logout()} />
         <NewBlogForm postNewBlog={e => postNewBlog(e)} />
         <h2>blogs</h2>
