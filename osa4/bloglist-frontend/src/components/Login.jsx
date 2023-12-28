@@ -1,32 +1,9 @@
-import loginService from '../services/loginService'
-
-const Login =  ({ propagateUser, user }) => {
-
-  const login = async(e) => {
-    e.preventDefault()
-    try {
-      const user = {
-        username: e.target.username.value,
-        password: e.target.password.value
-      }
-      const result = await loginService.postLogin(user)
-      localStorage.setItem('loggedNoteappUser', JSON.stringify(result)) 
-      propagateUser(result)
-    } catch (ex) {
-      console.log('exception: ', ex)
-    }    
-  }
-
-  const logout = () => {
-    localStorage.removeItem('loggedNoteappUser')
-    propagateUser('')
-  }
-
+const Login =  ({ login, logout, user }) => {
   if (user) {
     return (
       <p>
         {user.name}
-        <button onClick={e =>logout()}>Logout</button>
+        <button onClick={() => logout()}>Logout</button>
       </p>
       )
   } else {
@@ -38,8 +15,6 @@ const Login =  ({ propagateUser, user }) => {
       </form>
     )
   }
-
-  
 }
 
 export default Login

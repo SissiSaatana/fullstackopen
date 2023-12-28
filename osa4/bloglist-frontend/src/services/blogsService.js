@@ -17,4 +17,4 @@ const postNewBlog = async (blog) => {
   return res.data
 }
 
-export default { getAll, setToken }
+export default { getAll, setToken, postNewBlog }
