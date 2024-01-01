@@ -4,6 +4,7 @@ import Login from './components/Login'
 import blogService from './services/blogsService'
 import loginService from './services/loginService'
 import FeedbackMsg from './components/FeedbackMsg'
+import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -70,12 +71,14 @@ const App = () => {
         msg: `a new blog ${newBlog.title} posted succesfully`,
         type: 'success'
       })
+      timeoutFeedbackMsg();
     } catch (ex) {
       console.log('exception: ', ex)
       setFeedbackMsg({ 
         msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
         type: 'error'
       })
+      timeoutFeedbackMsg();
     }
   }
 
@@ -96,7 +99,10 @@ const App = () => {
       <div>
         <FeedbackMsg msg={feedbackMsg} />
         <Login user={user} login={(e) => login(e)} logout={() => logout()} />
-        <NewBlogForm postNewBlog={e => postNewBlog(e)} />
+        
+        <Togglable buttonLabel='New blog'> 
+          <NewBlogForm postNewBlog={e => postNewBlog(e)} />
+        </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
           <Blog key={blog.id} blog={blog} />

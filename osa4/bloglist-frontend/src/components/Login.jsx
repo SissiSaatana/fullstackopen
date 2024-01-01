@@ -1,3 +1,6 @@
+import React, { Component } from "react";
+import style from "../styles/login.module.css";
+
 const Login =  ({ login, logout, user }) => {
   if (user) {
     return (
@@ -8,9 +11,17 @@ const Login =  ({ login, logout, user }) => {
       )
   } else {
     return (
-      <form onSubmit={e => login(e)}>
-        <input type="text" name="username"></input>
-        <input type="text" name="password"></input>
+      <form onSubmit={e => login(e)} className={style['login-form']}>
+        <div className={style['input-container']}>
+          <label htmlFor="username">username:</label>
+          <input type="text" name="username"></input>
+        </div>
+
+        <div className={style['input-container']}>
+          <label htmlFor="password">password:</label>
+          <input type="password" name="password"></input>
+        </div>
+
         <button>Kirjaudu</button>
       </form>
     )

@@ -1,0 +1,29 @@
+.login-form {
+  background-color: #f3f3f3;
+  min-width: 150px;
+  max-width: 10%;
+  display: flex;
+  flex-direction: column;
+  border:1px solid rgb(92, 92, 92);
+  border-radius: 5px;
+  filter: drop-shadow(8px 8px 3px #999999);
+  margin: .5% 0;
+}
+
+.input-container {
+  margin: 2%; 
+}
+
+.input-container > input {
+  width: 96%; 
+}
+
+.input-container > label {
+  display: block;
+}
+
+.login-form > button {
+  margin: 2% auto;
+  min-width: 70px;
+  max-width: 50%;
+}

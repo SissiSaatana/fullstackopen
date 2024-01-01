@@ -1,0 +1,30 @@
+.blog-form {
+  background-color: #f3f3f3;
+  min-width: 200px;
+  max-width: 13%;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid rgb(92, 92, 92);
+  border-radius: 5px;
+  filter: drop-shadow(8px 8px 3px #999999);
+  margin: .5% 0;
+}
+
+.input-container {
+  margin: 3%;
+}
+
+.input-container > label {
+  display: block;
+}
+
+.input-container > input {
+  width: 96%; 
+}
+
+.blog-form > button {
+  margin: 2% auto;
+  min-width: 70px;
+  max-width: 50%;
+}
+
