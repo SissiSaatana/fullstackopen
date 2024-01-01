@@ -7,8 +7,6 @@ const Blog = ({ blog }) => (
 )
 
 const NewBlogForm = ({postNewBlog}) => {
-  
-  return (
     <form onSubmit={e => postNewBlog(e)} className={style['blog-form']}>
       <div className={style['input-container']}>
         <label htmlFor='title'>Title</label>
@@ -24,6 +22,5 @@ const NewBlogForm = ({postNewBlog}) => {
       </div>
       <button type='submit'>Create</button>
     </form>
-  )
 }
 export { Blog, NewBlogForm } 
