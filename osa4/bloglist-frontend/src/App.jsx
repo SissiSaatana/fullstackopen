@@ -103,6 +103,7 @@ const App = () => {
         <Togglable buttonLabel='New blog'> 
           <NewBlogForm postNewBlog={e => postNewBlog(e)} />
         </Togglable>
+
         <h2>blogs</h2>
         {blogs.map(blog =>
             <Blog key={blog.id} blog={blog} />

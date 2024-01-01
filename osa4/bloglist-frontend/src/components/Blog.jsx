@@ -9,11 +9,10 @@ const Blog = ({ blog }) => {
     border: 'solid',
     borderWidth: 1,
     marginBottom: 5,
-    width: '40%'
-    //width: 'fit-content'
+    width: '40%',
   }
   const hidableContent = {
-    display: display
+    display: display,
   }
 
   const toggleContentDisplay = e => {
@@ -34,12 +33,14 @@ const Blog = ({ blog }) => {
         <p>{blog.url}</p>
         <p>{blog.author}</p>
         <p>Likes 0 <button>like</button></p>
+        <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
       </div>
     </div>  
   )
 }
 
 const NewBlogForm = ({postNewBlog}) => {
+  return (
     <form onSubmit={e => postNewBlog(e)} className={style['blog-form']}>
       <div className={style['input-container']}>
         <label htmlFor='title'>Title</label>
@@ -55,5 +56,6 @@ const NewBlogForm = ({postNewBlog}) => {
       </div>
       <button type='submit'>Create</button>
     </form>
+  )
 }
 export { Blog, NewBlogForm } 
