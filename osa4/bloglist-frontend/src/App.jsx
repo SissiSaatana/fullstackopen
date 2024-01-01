@@ -105,47 +105,21 @@ const App = () => {
         </Togglable>
         <h2>blogs</h2>
         {blogs.map(blog =>
-          <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} />
         )}
       </div>
     )
   }
-  
-  
-
-
-  // f1 
-  // "command promt"
-
-  // f2
-  // change variable name inside file
-
-  // ctrl + k, z
-  //     toggle zen mode
-
-  // ctrl + k, c
-  //     comment line 
-  // ctrl + k, u
-  //     uncomment line
-
-  // ctrl + k + s -> save all opened files
-  // ctrl + k, s -> view hotkeys
-
-      
-  // if (!user) {
-  //   return (<Login propagateUser={(user) => setupUser(user)} />)
-  // } else {
-  //   return (
-  //     <div>
-  //       <p>{user.name} logged in</p>
-  //       <Login propagateUser={(user) => setupUser(user)} />
-  //       <h2>blogs</h2>
-  //       {blogs.map(blog =>
-  //         <Blog key={blog.id} blog={blog} />
-  //       )}
-  //     </div>
-  //   )
-  // }
+        // <ul>
+        //   {blogs.map(blog =>
+        //     <li key={blog.id}>
+        //       {blog.title}
+        //       <Togglable buttonLabel='New blog'> 
+        //         <Blog blog={blog} />
+        //       </Togglable>
+        //     </li>
+        //   )}
+        // </ul>        
 }
 
 export default App
