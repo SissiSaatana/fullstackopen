@@ -101,6 +101,22 @@ const App = () => {
     }
   }
 
+  const removeBlog = async blogId => {
+    try {
+      const result = await blogService.deleteBlog(blogId)
+      console.log(result)
+      if (result.status && result.status === 200)
+        setBlogs(blogs.filter(b => b.id !== blogId))
+    } catch (ex) {
+      console.log('exception: ', ex)
+      setFeedbackMsg({ 
+        msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
+        type: 'error'
+      })
+      timeoutFeedbackMsg();
+    }
+  }
+
   const timeoutFeedbackMsg = () => 
     setTimeout(() => {
       setFeedbackMsg({msg: '', type: ''})
@@ -125,7 +141,7 @@ const App = () => {
 
         <h2>blogs</h2>
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} likeBlog={likeBlog} />
+            <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
         )}
       </div>
     )

@@ -1,7 +1,7 @@
 import style from "../styles/blog.module.css";
 import { useState } from 'react'
 
-const Blog = ({ blog, likeBlog }) => {
+const Blog = ({ blog, likeBlog, removeBlog }) => {
   const [display, setDisplay] = useState('none')
   const blogStyle = {    
     paddingTop: 10,
@@ -29,6 +29,10 @@ const Blog = ({ blog, likeBlog }) => {
     likeBlog(blog)
   }
 
+  const remove = () => {
+    removeBlog(blog.id)
+  }
+
   return (
     <div style={blogStyle}>
       <p>{blog.title} <button onClick={e => toggleContentDisplay(e)}>view</button></p>
@@ -37,6 +41,7 @@ const Blog = ({ blog, likeBlog }) => {
         <p>{blog.author}</p>
         <p>Likes {blog.likes} <button onClick={like}>like</button></p>
         <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
+        <button onClick={remove}>Remove</button>
       </div>
     </div>  
   )
