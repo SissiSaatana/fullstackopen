@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const bcrypt = require('bcrypt')
 const usersRouter = require('express').Router()
 const User = require('../models/user')
@@ -11,8 +10,6 @@ usersRouter.get('/', async (req, res) => {
 usersRouter.post('/', async (request, response, next) => {
   try {
     const { username, name, password } = request.body
-
-    console.log(username)
 
     const saltRounds = 10
     const passwordHash = await bcrypt.hash(password, saltRounds)

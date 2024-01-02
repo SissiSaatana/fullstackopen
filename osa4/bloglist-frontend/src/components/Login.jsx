@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import PropTypes from 'prop-types'
 import style from "../styles/login.module.css";
 
 const Login =  ({ login, logout, user }) => {
@@ -26,6 +26,12 @@ const Login =  ({ login, logout, user }) => {
       </form>
     )
   }
+}
+
+Login.propTypes = {
+  login: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired,
+  // user: Proptypes.object
 }
 
 export default Login

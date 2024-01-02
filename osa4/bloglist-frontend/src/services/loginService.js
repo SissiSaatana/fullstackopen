@@ -14,7 +14,9 @@ const postLogin = async (user) => {
   const res = await axios
     .post(baseUrl, user)
     .catch(error => console.log('error', error))
-  return res.data
+  const userResponse = res.data.user
+  userResponse.token = res.data.token
+  return userResponse
 }
 
 export default { postLogin }

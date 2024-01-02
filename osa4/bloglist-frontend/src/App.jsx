@@ -12,9 +12,10 @@ const App = () => {
   const [feedbackMsg, setFeedbackMsg] = useState({msg: '', type: ''})  
 
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('loggedNoteappUser'))
-    if (user) {
-      setupUser(user)
+    const storage = JSON.parse(localStorage.getItem('loggedNoteappUser'))
+    console.log('storage', storage)
+    if (storage) {
+      setupUser(storage)
     }
   }, [])
 
@@ -141,7 +142,13 @@ const App = () => {
 
         <h2>blogs</h2>
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog}/>
+            <Blog 
+              key={blog.id}
+              blog={blog}
+              likeBlog={likeBlog}
+              removeBlog={removeBlog}
+              user={user}
+            />
         )}
       </div>
     )
