@@ -50,7 +50,9 @@ const App = () => {
       if (user !== undefined) {
         blogService.setToken(user.token)
         const blogs = await blogService.getAll()
-        setBlogs(blogs)
+        // const sortedBlogs = blogs.sort((a, b) => a.likes - b.likes).filter(b => b.likes !== 0).reverse()
+        // sortedBlogs.concat(blogs.filter(b => b.like === 0))
+        setBlogs(blogs.sort((a, b) => b.likes - a.likes))
       }
     } catch (ex) {
       console.log('exception: ', ex)
@@ -87,6 +89,7 @@ const App = () => {
       blog.likes += 1
       const result = await blogService.updateBlog(blog)
       const newBlogs = [...blogs].map(b => (b.id === blog.id) ? blog : b)
+      newBlogs.sort((a, b) => b.likes - a.likes)
       setBlogs(newBlogs)
     } catch (ex) {
       console.log('exception: ', ex)
