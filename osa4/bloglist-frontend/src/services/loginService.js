@@ -11,7 +11,6 @@ const baseUrl = 'http://localhost:3003/api/login'
 
 
 const postLogin = async (user) => {
-  console.log('login user', user)
   const res = await axios
     .post(baseUrl, user)
     .catch(error => console.log('error', error))

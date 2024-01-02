@@ -1,7 +1,7 @@
 import style from "../styles/blog.module.css";
 import { useState } from 'react'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, likeBlog }) => {
   const [display, setDisplay] = useState('none')
   const blogStyle = {    
     paddingTop: 10,
@@ -25,6 +25,9 @@ const Blog = ({ blog }) => {
     }
   }
 
+  const like = () => {
+    likeBlog(blog)
+  }
 
   return (
     <div style={blogStyle}>
@@ -32,7 +35,7 @@ const Blog = ({ blog }) => {
       <div style={hidableContent}>
         <p>{blog.url}</p>
         <p>{blog.author}</p>
-        <p>Likes 0 <button>like</button></p>
+        <p>Likes {blog.likes} <button onClick={like}>like</button></p>
         <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
       </div>
     </div>  

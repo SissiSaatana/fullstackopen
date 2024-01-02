@@ -82,6 +82,22 @@ const App = () => {
     }
   }
 
+  const likeBlog = async blog => {
+    try {
+      blog.likes += 1
+      const result = await blogService.updateBlog(blog)
+      const newBlogs = [...blogs].map(b => (b.id === blog.id) ? blog : b)
+      setBlogs(newBlogs)
+    } catch (ex) {
+      console.log('exception: ', ex)
+      setFeedbackMsg({ 
+        msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
+        type: 'error'
+      })
+      timeoutFeedbackMsg();
+    }
+  }
+
   const timeoutFeedbackMsg = () => 
     setTimeout(() => {
       setFeedbackMsg({msg: '', type: ''})
@@ -106,7 +122,7 @@ const App = () => {
 
         <h2>blogs</h2>
         {blogs.map(blog =>
-            <Blog key={blog.id} blog={blog} />
+            <Blog key={blog.id} blog={blog} likeBlog={likeBlog} />
         )}
       </div>
     )

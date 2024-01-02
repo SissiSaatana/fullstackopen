@@ -1,9 +1,11 @@
 /* eslint-disable import/order */
 /* eslint-disable no-underscore-dangle */
+const mongoose = require('mongoose')
 const blogsRouter = require('express').Router()
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const jwt = require('jsonwebtoken')
+
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user')
@@ -39,11 +41,22 @@ blogsRouter.post('/', async (req, res, next) => {
     const result = await blog.save()
     user.blogs = user.blogs.concat(result._id)
     await user.save()
-    result.user = user  
+    result.user = user
 
     res.status(201).json(result)
   } catch (error) {
     next(error);
+  }
+})
+
+blogsRouter.put('/', async (req, res, next) => {
+  try {
+    const blog = await Blog.findById(req.body.id)
+    blog.likes += 1
+    await blog.save()
+    return res.status(204).json()
+  } catch (error) {
+    next(error)
   }
 })
 
