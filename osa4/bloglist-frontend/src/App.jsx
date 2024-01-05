@@ -75,8 +75,9 @@ const App = () => {
       }
       const result = await blogService.postNewBlog(newBlog)
       setBlogs(blogs.concat(result))
-      setUser({...user, blogs: user.blogs.concat(result.id)})
-      localStorage.setItem('loggedNoteappUser', JSON.stringify(user)) 
+      const newUser = {...user, blogs: user.blogs.concat(result.id)}
+      setUser(newUser)
+      localStorage.setItem('loggedNoteappUser', JSON.stringify(newUser)) 
       setFeedbackMsg({ 
         msg: `a new blog ${newBlog.title} posted succesfully`,
         type: 'success'
