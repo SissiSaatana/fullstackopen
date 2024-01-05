@@ -1,9 +1,9 @@
-const FeedbackMsg = ({msg}) => {
-  let msgStyle;
+const FeedbackMsg = ({ msg }) => {
+  let msgStyle
 
-  if (msg.msg === '') 
-    return;
-  
+  if (msg.msg === '')
+    return
+
   msgStyle = {
     borderRadius: '5px',
     fontSize: 16,
@@ -17,7 +17,7 @@ const FeedbackMsg = ({msg}) => {
     msgStyle.border = '2px solid red'
     msgStyle.color =  'red'
   }
-  
+
   return (
     <p style={msgStyle}>{msg.msg}</p>
   )

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import style from "../styles/login.module.css";
+import style from '../styles/login.module.css'
 
 const Login =  ({ login, logout, user }) => {
   if (user) {
@@ -8,7 +8,7 @@ const Login =  ({ login, logout, user }) => {
         {user.name}
         <button onClick={() => logout()}>Logout</button>
       </p>
-      )
+    )
   } else {
     return (
       <form onSubmit={e => login(e)} className={style['login-form']}>

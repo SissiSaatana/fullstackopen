@@ -2,7 +2,7 @@ import axios from 'axios'
 const baseUrl = 'http://localhost:3003/api/blogs'
 
 const setToken = newToken => {
-  axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`;
+  axios.defaults.headers.common['Authorization'] = `Bearer ${newToken}`
 }
 
 const getAll = async () => {
