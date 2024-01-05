@@ -25,12 +25,12 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
     }
   }
 
-  const like = () => {
+  const like = () => 
     likeBlog(blog)
-  }
 
   const remove = () => {
-    removeBlog(blog.id)
+    if (confirm(`Do u really want to remove ${blog.title} blog`))
+      removeBlog(blog.id)
   }
 
   return (

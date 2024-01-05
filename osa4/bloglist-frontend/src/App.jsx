@@ -15,7 +15,8 @@ const App = () => {
     const storage = JSON.parse(localStorage.getItem('loggedNoteappUser'))
     console.log('storage', storage)
     if (storage) {
-      setupUser(storage)
+      setUser(storage)
+      setServiceTokenAndGetBlogs(storage)
     }
   }, [])
 
@@ -28,7 +29,8 @@ const App = () => {
       }
       const result = await loginService.postLogin(user)
       localStorage.setItem('loggedNoteappUser', JSON.stringify(result)) 
-      setupUser(result)
+      setUser(result)
+      setServiceTokenAndGetBlogs(result)
 
     } catch (ex) {
       console.log('exception: ', ex)
@@ -36,6 +38,7 @@ const App = () => {
         msg: `Wrong username or password`,
         type: 'error'
       }) 
+      timeoutFeedbackMsg()
     }    
   }
 
@@ -45,17 +48,19 @@ const App = () => {
     setBlogs('')
   }
 
-  const setupUser = async (user) => {
-    setUser(user)
+  const setServiceTokenAndGetBlogs = async (user) => {
     try {
       if (user !== undefined) {
         blogService.setToken(user.token)
         const blogs = await blogService.getAll()
-        // const sortedBlogs = blogs.sort((a, b) => a.likes - b.likes).filter(b => b.likes !== 0).reverse()
-        // sortedBlogs.concat(blogs.filter(b => b.like === 0))
         setBlogs(blogs.sort((a, b) => b.likes - a.likes))
       }
     } catch (ex) {
+      setFeedbackMsg({ 
+        msg: `Error while trying to set token for blog service and fetching blogs: ${ex}`,
+        type: 'error'
+      }) 
+      timeoutFeedbackMsg()
       console.log('exception: ', ex)
     }
   }
@@ -70,6 +75,8 @@ const App = () => {
       }
       const result = await blogService.postNewBlog(newBlog)
       setBlogs(blogs.concat(result))
+      setUser({...user, blogs: user.blogs.concat(result.id)})
+      localStorage.setItem('loggedNoteappUser', JSON.stringify(user)) 
       setFeedbackMsg({ 
         msg: `a new blog ${newBlog.title} posted succesfully`,
         type: 'success'
@@ -93,9 +100,8 @@ const App = () => {
       newBlogs.sort((a, b) => b.likes - a.likes)
       setBlogs(newBlogs)
     } catch (ex) {
-      console.log('exception: ', ex)
       setFeedbackMsg({ 
-        msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
+        msg: `Failed to update blog ${newBlog.title} likes. Error: ${ex}`,
         type: 'error'
       })
       timeoutFeedbackMsg();
@@ -105,13 +111,11 @@ const App = () => {
   const removeBlog = async blogId => {
     try {
       const result = await blogService.deleteBlog(blogId)
-      console.log(result)
       if (result.status && result.status === 200)
         setBlogs(blogs.filter(b => b.id !== blogId))
     } catch (ex) {
-      console.log('exception: ', ex)
       setFeedbackMsg({ 
-        msg: `Failed to post blog ${newBlog.title}. Error: ${ex}`,
+        msg: `Failed to remove blog ${newBlog.title}. Error: ${ex}`,
         type: 'error'
       })
       timeoutFeedbackMsg();
