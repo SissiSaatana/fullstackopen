@@ -1,5 +1,10 @@
 /* eslint-disable no-case-declarations */
 import { createSlice } from '@reduxjs/toolkit'
+import anecdoteServices from '../services/anecdoteServices'
+import { useDispatch } from 'react-redux'
+
+
+
 
 const anecdoteSlice = createSlice({
   name: 'anecdote',
@@ -34,4 +39,10 @@ export const {
   appendAnecdote,
   setAnecdotes
 } = anecdoteSlice.actions
+
+export const initializeAnecdotes = async (dispatch) => {
+  const anecdotes = await anecdoteServices.getAll()
+  dispatch(setAnecdotes(anecdotes))
+}
+
 export default anecdoteSlice.reducer
