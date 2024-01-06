@@ -34,14 +34,14 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
   }
 
   return (
-    <div style={blogStyle}>
+    <div class='blog' style={blogStyle}>
       <p>{blog.title} <button onClick={e => toggleContentDisplay(e)}>view</button></p>
       <div style={hidableContent}>
         <p>{blog.url}</p>
         <p>{blog.author}</p>
         <p>Likes {blog.likes} <button onClick={like}>like</button></p>
         <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
-        {(user.blogs.includes(blog.id)) ? <button onClick={remove}>Remove</button> : ''}
+        {(user.blogs.includes(blog.id)) ? <button class='remove-blog-button' onClick={remove}>Remove</button> : ''}
       </div>
     </div>
   )
@@ -62,7 +62,7 @@ const NewBlogForm = ({ postNewBlog }) => {
         <label htmlFor='url'>Url</label>
         <input type='text' name='url'></input>
       </div>
-      <button type='submit'>Create</button>
+      <button id='submit-new-blog' type='submit'>Create</button>
     </form>
   )
 }

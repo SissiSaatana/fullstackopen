@@ -90,7 +90,7 @@ const App = () => {
         type: 'error'
       })
       timeoutFeedbackMsg()
-    }
+    } 
   }
 
   const likeBlog = async blog => {
@@ -128,7 +128,7 @@ const App = () => {
       setFeedbackMsg({ msg: '', type: '' })
     }, 5000)
 
-  if (blogs === undefined || blogs.length === 0) {
+  if (user === '') {
     return (
       <>
         <FeedbackMsg msg={feedbackMsg} />

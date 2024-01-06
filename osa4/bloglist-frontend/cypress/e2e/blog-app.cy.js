@@ -8,6 +8,12 @@ describe('Blog app ', function() {
       password: 'salainen'
     }
     cy.request('POST', 'http://localhost:3003/api/users/', user) 
+    const user2 = {
+      name: 'Luukkainen',
+      username: 'tester',
+      password: 'passu'
+    }
+    cy.request('POST', 'http://localhost:3003/api/users/', user2) 
     cy.visit('http://localhost:5173')
   })
 
@@ -34,5 +40,66 @@ describe('Blog app ', function() {
       
       cy.contains('Wrong username or password')
     })
+  })
+
+  describe('When logged in', function() {
+    beforeEach(function() {
+      cy.get('input[name="username"]').type('mluukkai')
+      cy.get('input[name="password"]').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function() {
+      cy.get('#show-button').click()
+      cy.get('input[name="title"]').type('test title')
+      cy.get('input[name="author"]').type('test author')
+      cy.get('input[name="url"]').type('https://test.com')
+      cy.get('#submit-new-blog').click()
+      
+      cy.contains('test title')
+      cy.contains('view').click()
+      cy.contains('test author')
+      cy.contains('https://test.com')
+      cy.contains('like').click()
+      cy.contains('Likes 1')
+    })
+
+    it('Blog can be liked', function() {
+      cy.get('#show-button').click()
+      cy.get('input[name="title"]').type('test title')
+      cy.get('input[name="author"]').type('test author')
+      cy.get('input[name="url"]').type('https://test.com')
+      cy.get('#submit-new-blog').click()
+      cy.contains('view').click()
+      cy.contains('like').click()
+      cy.contains('Likes 1')
+    })
+
+    it('Blog can be removed', function() {
+      cy.get('#show-button').click()
+      cy.get('input[name="title"]').type('test title')
+      cy.get('input[name="author"]').type('test author')
+      cy.get('input[name="url"]').type('https://test.com')
+      cy.get('#submit-new-blog').click()
+      cy.contains('view').click()
+      cy.contains('Remove').click()
+      cy.get('.blog').should('not.exist')
+    })
+
+    it('Blog can only be removed by creator',  function() {
+      cy.get('#show-button').click()
+      cy.get('input[name="title"]').type('test title')
+      cy.get('input[name="author"]').type('test author')
+      cy.get('input[name="url"]').type('https://test.com')
+      cy.get('#submit-new-blog').click()
+      cy.contains('view').click()
+      
+      cy.contains('Logout').click()
+      cy.get('input[name="username"]').type('tester')
+      cy.get('input[name="password"]').type('passu')
+      cy.get('#login-button').click()
+      cy.get('.remove-blog-button').should('not.exist')
+    })
+
   })
 })
