@@ -4,7 +4,7 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { Blog } from './Blog'
 
-test('renders content', async() => {
+test('Blog tests', async() => {
   const blog = {
     'title': 'mymmerön blogi',
     'author': 'Mymyshka Petroskoi',
@@ -60,11 +60,26 @@ test('renders content', async() => {
     'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InRlc3QiLCJpZCI6IjY1OGJkMDNlNjFkYjBlYTIzODdmNjRkNyIsImlhdCI6MTcwNDQ5NjQ2Nn0.Iafub5dZEAND4HptcdgaruLrogGJQe905w83AgXblrQ'
   }
 
+  const mockHandler = jest.fn()
 
-  render(<Blog blog={blog} user={user} />)
+  render(<Blog blog={blog} user={user} likeBlog={mockHandler} />)
 
-  const element = screen.getByText('mymmerön blogi')
-  expect(element).toBeDefined()
+  const testUser = userEvent.setup()
+  const title = screen.getByText('mymmerön blogi')
+  const viewButton = screen.getByText('view')
+  await testUser.click(viewButton)
+  const author = screen.getByText('Mymyshka Petroskoi')
+  const url = screen.getByText('https://mymy-blob.cat')
+  const likes = screen.getByText(`Likes ${blog.likes}`)
+  const likeButton = screen.getByText('like')
+  await testUser.click(likeButton)
+  await testUser.click(likeButton)
+
+  expect(title).toBeDefined()
+  expect(author).toBeDefined()
+  expect(url).toBeDefined()
+  expect(likes).toBeDefined()
+  expect(mockHandler.mock.calls).toHaveLength(2)
 })
 
 
