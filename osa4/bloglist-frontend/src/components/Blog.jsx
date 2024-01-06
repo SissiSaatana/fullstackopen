@@ -1,9 +1,9 @@
-import style from "../styles/blog.module.css";
+import style from '../styles/blog.module.css'
 import { useState } from 'react'
 
 const Blog = ({ blog, likeBlog, removeBlog, user }) => {
   const [display, setDisplay] = useState('none')
-  const blogStyle = {    
+  const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     border: 'solid',
@@ -25,7 +25,7 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
     }
   }
 
-  const like = () => 
+  const like = () =>
     likeBlog(blog)
 
   const remove = () => {
@@ -43,11 +43,11 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
         <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
         {(user.blogs.includes(blog.id)) ? <button onClick={remove}>Remove</button> : ''}
       </div>
-    </div>  
+    </div>
   )
 }
 
-const NewBlogForm = ({postNewBlog}) => {
+const NewBlogForm = ({ postNewBlog }) => {
   return (
     <form onSubmit={e => postNewBlog(e)} className={style['blog-form']}>
       <div className={style['input-container']}>
@@ -66,4 +66,4 @@ const NewBlogForm = ({postNewBlog}) => {
     </form>
   )
 }
-export { Blog, NewBlogForm } 
+export { Blog, NewBlogForm }
