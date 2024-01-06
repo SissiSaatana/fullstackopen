@@ -35,11 +35,19 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
 
   return (
     <div class='blog' style={blogStyle}>
-      <p>{blog.title} <button onClick={e => toggleContentDisplay(e)}>view</button></p>
+      <p>
+        {blog.title}
+        <button class='show-blog-button'
+          onClick={e => toggleContentDisplay(e)}>
+            view
+          </button>
+      </p>
       <div style={hidableContent}>
         <p>{blog.url}</p>
         <p>{blog.author}</p>
-        <p>Likes {blog.likes} <button onClick={like}>like</button></p>
+        <p>Likes {blog.likes} 
+          <button class='like-button' onClick={like}>like</button>
+        </p>
         <p>{(blog.user) ? blog.user.name : 'unknown poster'}</p>
         {(user.blogs.includes(blog.id)) ? <button class='remove-blog-button' onClick={remove}>Remove</button> : ''}
       </div>

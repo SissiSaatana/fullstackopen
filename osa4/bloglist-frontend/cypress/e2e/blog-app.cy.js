@@ -1,6 +1,6 @@
 describe('Blog app ', function() {
   beforeEach(function() {
-    // cy.request('POST', 'http://localhost:3003/api/testing/reset')
+    cy.request('POST', 'http://localhost:3003/api/testing/reset')
     cy.request('POST', 'http://localhost:3003/api/testing/reset')    
     const user = {
       name: 'Matti Luukkainen',
@@ -99,6 +99,33 @@ describe('Blog app ', function() {
       cy.get('input[name="password"]').type('passu')
       cy.get('#login-button').click()
       cy.get('.remove-blog-button').should('not.exist')
+    })
+
+    it('Blogs are sorted via likes',  function() {
+      cy.get('#show-button').click()
+      cy.get('input[name="title"]').type('test title')
+      cy.get('input[name="author"]').type('test author')
+      cy.get('input[name="url"]').type('https://test.com')
+      cy.get('#submit-new-blog').click()
+      cy.get('input[name="title"]').focus().clear()
+      cy.get('input[name="author"]').focus().clear()
+      cy.get('input[name="url"]').focus().clear()
+      
+      cy.get('input[name="title"]').type('other title')
+      cy.get('input[name="author"]').type('other author')
+      cy.get('input[name="url"]').type('https://other.com')
+      cy.get('#submit-new-blog').click()
+      
+      
+      cy.get('.show-blog-button').eq(1).click()
+      cy.get('.like-button').eq(1).click()
+      
+      cy.get('.blog').eq(0).should('contain', 'other title')
+
+      cy.get('.show-blog-button').eq(1).click()
+      cy.get('.like-button').eq(1).click()
+      cy.get('.like-button').eq(1).click()
+      cy.get('.blog').eq(0).should('contain', 'test title')
     })
 
   })

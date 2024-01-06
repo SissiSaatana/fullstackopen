@@ -135,6 +135,17 @@ const App = () => {
         <Login user={user} login={e => login(e)} logout={() => logout()} />
       </>
     )
+  } else if (blogs === 'undefined' || blogs.length === 0) {
+    return (
+      <div>
+        <FeedbackMsg msg={feedbackMsg} />
+        <Login user={user} login={(e) => login(e)} logout={() => logout()} />
+
+        <Togglable buttonLabel='New blog'>
+          <NewBlogForm postNewBlog={e => postNewBlog(e)} />
+        </Togglable>
+      </div>
+    )
   } else {
     return (
       <div>
