@@ -1,6 +1,6 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { voteAnecdote } from './reducers/anecdoteReducer'
-import AddAnecdote from './components/Anecdote'
+import AnecdoteForm from './components/AnecdoteForm'
 
 const App = () => {
   const anecdotes = useSelector(state => state)
@@ -26,7 +26,7 @@ const App = () => {
         </div>
       )}
       <h2>create new</h2>
-      <AddAnecdote />
+      <AnecdoteForm />
     </div>
   )
 }
