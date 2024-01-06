@@ -14,7 +14,6 @@ const store = configureStore({
   }
 })
 
-
 ReactDOM.createRoot(document.getElementById('root')).render(
   <Provider store={store}>
     <App />
