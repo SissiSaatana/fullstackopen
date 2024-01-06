@@ -49,7 +49,7 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
 
 const NewBlogForm = ({ postNewBlog }) => {
   return (
-    <form onSubmit={e => postNewBlog(e)} className={style['blog-form']}>
+    <form onSubmit={postNewBlog} className={style['blog-form']}>
       <div className={style['input-container']}>
         <label htmlFor='title'>Title</label>
         <input type="text" name='title'></input>

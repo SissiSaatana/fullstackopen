@@ -2,7 +2,7 @@ import React from 'react'
 import '@testing-library/jest-dom'
 import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { Blog } from './Blog'
+import { Blog, NewBlogForm } from './Blog'
 
 test('Blog tests', async() => {
   const blog = {
@@ -82,4 +82,24 @@ test('Blog tests', async() => {
   expect(mockHandler.mock.calls).toHaveLength(2)
 })
 
+test('new blog form tests', async() => {
 
+  const mockHandler = jest.fn(e => e.preventDefault())
+
+  const { container } = render(<NewBlogForm postNewBlog={mockHandler} />)
+  const user = userEvent.setup()
+  const inputTitle = container.querySelector('input[name="title"]')
+  const inputAuthor = container.querySelector('input[name="author"]')
+  const inputUrl = container.querySelector('input[name="url"]')
+  const buttonSubmit = screen.getByText('Create')
+
+  await user.type(inputTitle, 'Test title...')
+  await user.type(inputAuthor, 'Test author...')
+  await user.type(inputUrl, 'https://test.test')
+  await user.click(buttonSubmit)
+
+  expect(mockHandler.mock.calls).toHaveLength(1)
+  expect(mockHandler.mock.calls[0][0].target.elements.title.value).toBe('Test title...')
+  expect(mockHandler.mock.calls[0][0].target.elements.author.value).toBe('Test author...')
+  expect(mockHandler.mock.calls[0][0].target.elements.url.value).toBe('https://test.test')
+})
