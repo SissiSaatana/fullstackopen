@@ -23,8 +23,12 @@ app.use(express.json())
 
 app.use('/api/login', loginRouter)
 app.use('/api/users', usersRouter)
-// app.use(middleware.tokenExtractor)
-// app.use(middleware.userExtractor)
+
+if (process.env.NODE_ENV === 'test') {
+  // eslint-disable-next-line global-require
+  const testRouter = require('./controllers/testing')
+  app.use('/api/testing', testRouter)
+}
 
 app.use('/api/blogs', middleware.tokenExtractor, middleware.userExtractor, blogsRouter)
 

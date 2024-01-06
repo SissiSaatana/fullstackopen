@@ -22,7 +22,7 @@ const Login =  ({ login, logout, user }) => {
           <input type="password" name="password"></input>
         </div>
 
-        <button>Kirjaudu</button>
+        <button id='login-button'>Kirjaudu</button>
       </form>
     )
   }
