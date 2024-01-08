@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { 
   Routes, Route, Link, useMatch, useNavigate 
 } from 'react-router-dom'
-import { useField } from './hooks'
+import { useField} from './hooks'
 
 
 const Menu = () => {
@@ -85,15 +85,15 @@ const CreateNew = (props) => {
       <form onSubmit={handleSubmit}>
         <div>
           content
-          <input {...content} />
+          <input {...Object.fromEntries(Object.entries(content).filter(([key]) => key !== 'reset'))} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...Object.fromEntries(Object.entries(author).filter(([key]) => key !== 'reset'))} />
         </div>
         <div>
           url for more info
-          <input {...info} /> 
+          <input {...Object.fromEntries(Object.entries(info).filter(([key]) => key !== 'reset'))} /> 
         </div>
         <button>create</button>
         <button onClick={e => {content.reset(e); author.reset(e); info.reset(e)}}>reset</button>
