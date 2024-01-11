@@ -1,4 +1,4 @@
-const blogsReducer = (state = {}, action) => {
+const blogsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET':
       return action.payload;
@@ -7,10 +7,10 @@ const blogsReducer = (state = {}, action) => {
   }
 };
 
-export const setNotification = (msg) => {
+export const setBlogs = (blogs) => {
   return {
     type: 'SET',
-    payload: msg,
+    payload: blogs,
   };
 };
 

@@ -6,18 +6,18 @@ import loginService from './services/loginService';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
 import { createStore } from 'redux';
-import notificationReducer, { setNotification } from './reducers/notificationReducer';
+import { setNotification } from './reducers/notificationReducer';
+import { setBlogs } from './reducers/blogsReducer';
 import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
-  const [blogs, setBlogs] = useState([]);
+  // const [blogs, setBlogs] = useState([]);
   const [user, setUser] = useState();
-  // const [notification, setNotification] = useState({ msg: '', type: '' });
+
   const dispatch = useDispatch();
-  const notification = useSelector((state) => state);
-
-  // const store = createStore(notificationReducer);
-
+  const notification = useSelector((state) => state.notification);
+  const blogs = useSelector((state) => state.blogs);
+  console.log('blogs', blogs);
   useEffect(() => {
     const storage = JSON.parse(localStorage.getItem('loggedNoteappUser'));
     console.log('storage', storage);
@@ -53,7 +53,7 @@ const App = () => {
   const logout = () => {
     localStorage.removeItem('loggedNoteappUser');
     setUser('');
-    setBlogs('');
+    dispatch(setBlogs(''));
   };
 
   const setServiceTokenAndGetBlogs = async (user) => {
@@ -61,7 +61,7 @@ const App = () => {
       if (user !== undefined) {
         blogService.setToken(user.token);
         const blogs = await blogService.getAll();
-        setBlogs(blogs.sort((a, b) => b.likes - a.likes));
+        dispatch(setBlogs(blogs.sort((a, b) => b.likes - a.likes)));
       }
     } catch (ex) {
       dispatch(
@@ -90,7 +90,7 @@ const App = () => {
         url: e.target.url.value,
       };
       const result = await blogService.postNewBlog(newBlog);
-      setBlogs(blogs.concat(result));
+      dispatch(setBlogs(blogs.concat(result)));
       const newUser = { ...user, blogs: user.blogs.concat(result.id) };
       setUser(newUser);
       localStorage.setItem('loggedNoteappUser', JSON.stringify(newUser));
@@ -119,7 +119,7 @@ const App = () => {
       const result = await blogService.updateBlog(blog);
       const newBlogs = [...blogs].map((b) => (b.id === blog.id ? blog : b));
       newBlogs.sort((a, b) => b.likes - a.likes);
-      setBlogs(newBlogs);
+      dispatch(setBlogs(newBlogs));
     } catch (ex) {
       dispatch(
         setNotification({
@@ -134,7 +134,7 @@ const App = () => {
   const removeBlog = async (blogId) => {
     try {
       const result = await blogService.deleteBlog(blogId);
-      if (result.status && result.status === 200) setBlogs(blogs.filter((b) => b.id !== blogId));
+      if (result.status && result.status === 200) dispatch(setBlogs(blogs.filter((b) => b.id !== blogId)));
     } catch (ex) {
       dispatch(
         setNotification({
