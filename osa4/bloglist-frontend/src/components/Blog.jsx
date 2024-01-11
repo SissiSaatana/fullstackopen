@@ -35,7 +35,7 @@ const Blog = ({ blog, likeBlog, removeBlog, user }) => {
     <div className="blog" style={blogStyle}>
       <p>
         {blog.title}
-        <button class="show-blog-button" onClick={(e) => toggleContentDisplay(e)}>
+        <button className="show-blog-button" onClick={(e) => toggleContentDisplay(e)}>
           view
         </button>
       </p>
