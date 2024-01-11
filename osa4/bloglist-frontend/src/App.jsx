@@ -1,28 +1,25 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Blog, NewBlogForm } from './components/Blog';
 import Login from './components/Login';
 import blogService from './services/blogsService';
 import loginService from './services/loginService';
 import Notification from './components/Notification';
 import Togglable from './components/Togglable';
-import { createStore } from 'redux';
 import { setNotification } from './reducers/notificationReducer';
 import { setBlogs } from './reducers/blogsReducer';
+import { setUser } from './reducers/userReducer';
 import { useSelector, useDispatch } from 'react-redux';
 
 const App = () => {
-  // const [blogs, setBlogs] = useState([]);
-  const [user, setUser] = useState();
-
   const dispatch = useDispatch();
   const notification = useSelector((state) => state.notification);
   const blogs = useSelector((state) => state.blogs);
-  console.log('blogs', blogs);
+  const user = useSelector((state) => state.user);
+
   useEffect(() => {
     const storage = JSON.parse(localStorage.getItem('loggedNoteappUser'));
-    console.log('storage', storage);
     if (storage) {
-      setUser(storage);
+      dispatch(setUser(storage));
       setServiceTokenAndGetBlogs(storage);
     }
   }, []);
@@ -36,7 +33,7 @@ const App = () => {
       };
       const result = await loginService.postLogin(user);
       localStorage.setItem('loggedNoteappUser', JSON.stringify(result));
-      setUser(result);
+      dispatch(setUser(result));
       setServiceTokenAndGetBlogs(result);
     } catch (ex) {
       console.log('exception: ', ex);
@@ -52,7 +49,7 @@ const App = () => {
 
   const logout = () => {
     localStorage.removeItem('loggedNoteappUser');
-    setUser('');
+    dispatch(setUser(''));
     dispatch(setBlogs(''));
   };
 
@@ -92,7 +89,7 @@ const App = () => {
       const result = await blogService.postNewBlog(newBlog);
       dispatch(setBlogs(blogs.concat(result)));
       const newUser = { ...user, blogs: user.blogs.concat(result.id) };
-      setUser(newUser);
+      dispatch(setUser(newUser));
       localStorage.setItem('loggedNoteappUser', JSON.stringify(newUser));
       dispatch(
         setNotification({
