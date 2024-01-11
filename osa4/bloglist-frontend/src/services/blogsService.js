@@ -17,6 +17,7 @@ const postNewBlog = async (blog) => {
 
 const updateBlog = async (blog) => {
   const res = await axios.put(baseUrl, blog).catch((error) => console.log('error', error));
+  console.log(res);
   return res.data;
 };
 

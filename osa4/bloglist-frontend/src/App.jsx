@@ -115,9 +115,9 @@ const App = () => {
 
   const likeBlog = async (blog) => {
     try {
-      blog.likes += 1;
       const result = await blogService.updateBlog(blog);
-      const newBlogs = [...blogs].map((b) => (b.id === blog.id ? blog : b));
+      console.log('result', result);
+      const newBlogs = blogs.map((b) => (b.id === blog.id ? result : b));
       newBlogs.sort((a, b) => b.likes - a.likes);
       dispatch(setBlogs(newBlogs));
     } catch (ex) {

@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
-    case 'SET':
+    case 'SET_BLOG':
       return action.payload;
     default:
       return state;
@@ -12,7 +12,7 @@ const blogsReducer = (state = [], action) => {
 export const setBlogs = (blogs) => {
   console.log('setBlogs blogs', blogs);
   return {
-    type: 'SET',
+    type: 'SET_BLOG',
     payload: blogs,
   };
 };

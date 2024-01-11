@@ -57,8 +57,8 @@ blogsRouter.put('/', async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.body.id);
     blog.likes += 1;
-    await blog.save();
-    return res.status(204).json();
+    const result = await blog.save();
+    return res.status(200).json(result);
   } catch (error) {
     next(error);
   }
