@@ -1,6 +1,6 @@
 const notificationReducer = (state = {}, action) => {
   switch (action.type) {
-    case 'SET':
+    case 'SET_NOTIFICATION':
       return action.payload;
     default:
       return state;
@@ -9,7 +9,7 @@ const notificationReducer = (state = {}, action) => {
 
 export const setNotification = (msg) => {
   return {
-    type: 'SET',
+    type: 'SET_NOTIFICATION',
     payload: msg,
   };
 };
