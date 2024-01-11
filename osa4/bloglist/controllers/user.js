@@ -1,10 +1,18 @@
+// const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const usersRouter = require('express').Router();
 const User = require('../models/user');
 
-usersRouter.get('/', async (req, res) => {
-  const users = await User.find({}).populate('blogs');
-  return res.json(users);
+usersRouter.get('/', async (req, res, next) => {
+  try {
+    const users = await User.find({}).populate('blogs');
+    console.log('find users:', users);
+    return res.status(200).json(users);
+  } catch (error) {
+    console.log('error');
+    console.log(error);
+    next(error);
+  }
 });
 
 usersRouter.post('/', async (request, response, next) => {

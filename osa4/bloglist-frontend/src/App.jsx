@@ -1,9 +1,11 @@
 import { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Blog, NewBlogForm } from './components/Blog';
 import Login from './components/Login';
 import blogService from './services/blogsService';
 import loginService from './services/loginService';
 import Notification from './components/Notification';
+import Users from './components/Users';
 import Togglable from './components/Togglable';
 import { setNotification } from './reducers/notificationReducer';
 import { setBlogs } from './reducers/blogsReducer';
@@ -50,7 +52,7 @@ const App = () => {
   const logout = () => {
     localStorage.removeItem('loggedNoteappUser');
     dispatch(setUser(''));
-    dispatch(setBlogs(''));
+    dispatch(setBlogs([]));
   };
 
   const setServiceTokenAndGetBlogs = async (user) => {
@@ -155,34 +157,51 @@ const App = () => {
         <Login user={user} login={(e) => login(e)} logout={() => logout()} />
       </>
     );
-  } else if (blogs === 'undefined' || blogs.length === 0) {
-    return (
-      <div>
-        <Notification msg={notification} />
-        <Login user={user} login={(e) => login(e)} logout={() => logout()} />
-
-        <Togglable buttonLabel="New blog">
-          <NewBlogForm postNewBlog={(e) => postNewBlog(e)} />
-        </Togglable>
-      </div>
-    );
   } else {
     return (
       <div>
         <Notification msg={notification} />
         <Login user={user} login={(e) => login(e)} logout={() => logout()} />
-
-        <Togglable buttonLabel="New blog">
-          <NewBlogForm postNewBlog={(e) => postNewBlog(e)} />
-        </Togglable>
-
-        <h2>blogs</h2>
-        {blogs.map((blog) => (
-          <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
-        ))}
+        <Router>
+          <Routes>
+            <Route path="/users/:id" element={<Users />} />
+            <Route path="/users" element={<Users />} />
+            <Route
+              path="/"
+              element={
+                <>
+                  <Togglable buttonLabel="New blog">
+                    <NewBlogForm postNewBlog={(e) => postNewBlog(e)} />
+                  </Togglable>
+                  <h2>blogs</h2>
+                  {blogs.map((blog) => (
+                    <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
+                  ))}
+                </>
+              }
+            />
+          </Routes>
+        </Router>
       </div>
     );
   }
+  // else {
+  //   return (
+  //     <div>
+  //       <Notification msg={notification} />
+  //       <Login user={user} login={(e) => login(e)} logout={() => logout()} />
+
+  //       <Togglable buttonLabel="New blog">
+  //         <NewBlogForm postNewBlog={(e) => postNewBlog(e)} />
+  //       </Togglable>
+
+  //       <h2>blogs</h2>
+  //       {blogs.map((blog) => (
+  //         <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
+  //       ))}
+  //     </div>
+  //   );
+  // }
 };
 
 export default App;

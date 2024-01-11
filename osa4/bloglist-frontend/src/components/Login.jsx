@@ -4,10 +4,10 @@ import style from '../styles/login.module.css';
 const Login = ({ login, logout, user }) => {
   if (user) {
     return (
-      <p>
-        {user.name}
+      <>
+        <p>{user.name} logged in</p>
         <button onClick={() => logout()}>Logout</button>
-      </p>
+      </>
     );
   } else {
     return (

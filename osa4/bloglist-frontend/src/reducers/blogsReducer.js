@@ -1,5 +1,3 @@
-import { createSlice } from '@reduxjs/toolkit';
-
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_BLOG':
