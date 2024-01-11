@@ -1,16 +1,16 @@
-const mongoose = require('mongoose')
-const supertest = require('supertest')
-const app = require('../app')
+const mongoose = require('mongoose');
+const supertest = require('supertest');
+const app = require('../app');
 // const testHelper = require('./test_helper')
 
-const api = supertest(app)
+const api = supertest(app);
 
 test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
-    .expect('Content-Type', /application\/json/)
-})
+    .expect('Content-Type', /application\/json/);
+});
 
 // test('expect 6 returned blogs', async () => {
 //   const response = await api.get('/api/blogs')
@@ -18,40 +18,38 @@ test('blogs are returned as json', async () => {
 // })
 
 test('expect id filed to be "id"', async () => {
-  const response = await api.get('/api/blogs')
-  response.body.forEach(blog => {
-    expect(blog).toHaveProperty('id')
+  const response = await api.get('/api/blogs');
+  response.body.forEach((blog) => {
+    expect(blog).toHaveProperty('id');
   });
-})
+});
 
 describe('Adding a new blog', () => {
   const user = {
     username: 'test',
     password: 'passu',
-  }
+  };
   const newBlog = {
     title: 'Petroskoi',
     author: 'mymy',
     url: 'petroskoi.fi',
     likes: 10,
     __v: 0,
-  }
+  };
 
   let loginUser;
   test('login with user and post new blog', async () => {
-    loginUser = await api
-      .post('/api/login')
-      .send(user)
+    loginUser = await api.post('/api/login').send(user);
 
-    console.log('loginUser', loginUser.body)
+    console.log('loginUser', loginUser.body);
     const postResponse = await api
       .post('/api/blogs')
       .set('Authorization', loginUser._body.token)
       .send(newBlog)
       .expect(201)
-      .expect('Content-Type', /application\/json/)
-    console.log('postResponse', postResponse)
-  })
+      .expect('Content-Type', /application\/json/);
+    console.log('postResponse', postResponse);
+  });
 
   // const token =
   // test('Post new blog', async () => {
@@ -69,41 +67,38 @@ describe('Adding a new blog', () => {
       author: 'mymy',
       url: 'petroskoi.fi',
       __v: 0,
-    }
+    };
 
     const postResponse = await api
       .post('/api/blogs')
       .send(newBlog)
       .expect(201)
-      .expect('Content-Type', /application\/json/)
+      .expect('Content-Type', /application\/json/);
     // postResponse.body.id = postResponse.body._id
     // delete postResponse.body._id
 
-    const getResponse = await api.get('/api/blogs')
-    const blog = getResponse.body.filter(b => b.id === postResponse.body.id)
-    expect(blog.likes === postResponse.body.likes)
-  })
+    const getResponse = await api.get('/api/blogs');
+    const blog = getResponse.body.filter((b) => b.id === postResponse.body.id);
+    expect(blog.likes === postResponse.body.likes);
+  });
 
   test('Post with bad request', async () => {
     const newBlog = {
       author: 'mymy',
       url: 'petroskoi.fi',
       __v: 0,
-    }
+    };
 
-    const postResponse = await api
-      .post('/api/blogs')
-      .send(newBlog)
-      .expect(400)
-  })
-})
+    const postResponse = await api.post('/api/blogs').send(newBlog).expect(400);
+  });
+});
 
 test('delete last blog', async () => {
   const res = await api
     .delete('/api/blogs/658bc0cbcdeb8311ce0bfaf8')
-    .expect(200)
-})
+    .expect(200);
+});
 
 afterAll(async () => {
-  await mongoose.connection.close()
-})
+  await mongoose.connection.close();
+});

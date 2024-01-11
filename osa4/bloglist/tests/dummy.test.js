@@ -1,5 +1,5 @@
 // /* eslint-disable no-undef */
-const listHelper = require('../utils/list_helper')
+const listHelper = require('../utils/list_helper');
 
 const blogs = [
   {
@@ -90,12 +90,12 @@ const blogs = [
     likes: 2,
     __v: 0,
   },
-]
+];
 
 test('dummy returns one', () => {
-  const result = listHelper.dummy(blogs)
-  expect(result).toBe(1)
-})
+  const result = listHelper.dummy(blogs);
+  expect(result).toBe(1);
+});
 
 // describe('total likes', () => {
 //   test('when list has no entries', () => {

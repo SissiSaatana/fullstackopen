@@ -6,39 +6,32 @@ module.exports = {
     es2021: true,
     node: true,
   },
-  extends: 'airbnb-base',
+  extends: ["prettier", "airbnb-base"],
+  plugins: ["prettier"],
   overrides: [
     {
       env: {
         node: true,
       },
-      files: [
-        '.eslintrc.{js,cjs}',
-      ],
+      files: [".eslintrc.{js,cjs}"],
       parserOptions: {
-        sourceType: 'script',
+        sourceType: "script",
       },
     },
   ],
   parserOptions: {
-    ecmaVersion: 'latest',
+    ecmaVersion: "latest",
   },
   rules: {
-    indent: [
-      'error',
-      2,
-    ],
-    eqeqeq: 'error',
+    indent: ["error", 2],
+    eqeqeq: "error",
     semi: 0,
-    'linebreak-style': ['error', 'windows'],
-    'arrow-parens': ['error', 'as-needed'],
-    'no-trailing-spaces': 'error',
-    'object-curly-spacing': [
-      'error', 'always',
-    ],
-    'arrow-spacing': [
-      'error', { before: true, after: true },
-    ],
-    'no-console': 0,
+    "linebreak-style": ["error", "windows"],
+    "arrow-parens": ["error", "as-needed"],
+    "no-trailing-spaces": "error",
+    "object-curly-spacing": ["error", "always"],
+    "arrow-spacing": ["error", { before: true, after: true }],
+    "no-console": 0,
+    "prettier/prettier": ["error"],
   },
 };

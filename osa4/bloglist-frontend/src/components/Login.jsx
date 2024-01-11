@@ -1,5 +1,5 @@
-import PropTypes from "prop-types";
-import style from "../styles/login.module.css";
+import PropTypes from 'prop-types';
+import style from '../styles/login.module.css';
 
 const Login = ({ login, logout, user }) => {
   if (user) {
@@ -11,13 +11,13 @@ const Login = ({ login, logout, user }) => {
     );
   } else {
     return (
-      <form onSubmit={(e) => login(e)} className={style["login-form"]}>
-        <div className={style["input-container"]}>
+      <form onSubmit={(e) => login(e)} className={style['login-form']}>
+        <div className={style['input-container']}>
           <label htmlFor="username">username:</label>
           <input type="text" name="username"></input>
         </div>
 
-        <div className={style["input-container"]}>
+        <div className={style['input-container']}>
           <label htmlFor="password">password:</label>
           <input type="password" name="password"></input>
         </div>

@@ -1,11 +1,11 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const Togglable = ({ buttonLabel, children }) => {
   const [visible, setVisible] = useState(false);
 
-  const hideWhenVisible = { display: visible ? "none" : "block" };
-  const showWhenVisible = { display: visible ? "block" : "none" };
+  const hideWhenVisible = { display: visible ? 'none' : 'block' };
+  const showWhenVisible = { display: visible ? 'block' : 'none' };
 
   const toggleVisibility = () => {
     setVisible(!visible);
@@ -30,6 +30,6 @@ Togglable.propTypes = {
   buttonLabel: PropTypes.string.isRequired,
 };
 
-Togglable.displayName = "Togglable";
+Togglable.displayName = 'Togglable';
 
 export default Togglable;
