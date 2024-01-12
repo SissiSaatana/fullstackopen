@@ -55,7 +55,7 @@ blogsRouter.post('/', async (req, res, next) => {
 
 blogsRouter.put('/', async (req, res, next) => {
   try {
-    const blog = await Blog.findById(req.body.id);
+    const blog = await Blog.findById(req.body.id).populate('user');
     blog.likes += 1;
     const result = await blog.save();
     return res.status(200).json(result);

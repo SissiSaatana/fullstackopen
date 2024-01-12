@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import { Blog, NewBlogForm } from './components/Blog';
 import Login from './components/Login';
 import blogService from './services/blogsService';
@@ -107,39 +107,6 @@ const App = () => {
     }
   };
 
-  const likeBlog = async (blog) => {
-    try {
-      const result = await blogService.updateBlog(blog);
-      console.log('result', result);
-      const newBlogs = blogs.map((b) => (b.id === blog.id ? result : b));
-      newBlogs.sort((a, b) => b.likes - a.likes);
-      dispatch(setBlogs(newBlogs));
-    } catch (ex) {
-      dispatch(
-        setNotification({
-          msg: `Failed to update blog ${blog.title} likes. Error: ${ex}`,
-          type: 'error',
-        }),
-      );
-      timeoutFeedbackMsg();
-    }
-  };
-
-  const removeBlog = async (blogId) => {
-    try {
-      const result = await blogService.deleteBlog(blogId);
-      if (result.status && result.status === 200) dispatch(setBlogs(blogs.filter((b) => b.id !== blogId)));
-    } catch (ex) {
-      dispatch(
-        setNotification({
-          msg: `Failed to remove blog ${blogId}. Error: ${ex}`,
-          type: 'error',
-        }),
-      );
-      timeoutFeedbackMsg();
-    }
-  };
-
   const timeoutFeedbackMsg = () =>
     setTimeout(() => {
       dispatch(setNotification({ msg: '', type: '' }));
@@ -156,15 +123,16 @@ const App = () => {
     return (
       <div>
         <Notification msg={notification} />
-        <Login user={user} login={(e) => login(e)} logout={() => logout()} />
         <Router>
+          <nav>
+            <Link to="/">Blogs</Link>
+            <Link to="/users">users</Link>
+            <Login user={user} login={(e) => login(e)} logout={() => logout()} />
+          </nav>
           <Routes>
             <Route path="/users/:id" element={<Users />} />
             <Route path="/users" element={<Users />} />
-            <Route
-              path="/blogs/:id"
-              element={<Blog blogs={blogs} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />}
-            />
+            <Route path="/blogs/:id" element={blogs.length ? <Blog blogs={blogs} /> : <Navigate replace to="/" />} />
             <Route
               path="/"
               element={
@@ -181,29 +149,12 @@ const App = () => {
                 </>
               }
             />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </Router>
       </div>
     );
   }
-  // <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
-  // else {
-  //   return (
-  //     <div>
-  //       <Notification msg={notification} />
-  //       <Login user={user} login={(e) => login(e)} logout={() => logout()} />
-
-  //       <Togglable buttonLabel="New blog">
-  //         <NewBlogForm postNewBlog={(e) => postNewBlog(e)} />
-  //       </Togglable>
-
-  //       <h2>blogs</h2>
-  //       {blogs.map((blog) => (
-  //         <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
-  //       ))}
-  //     </div>
-  //   );
-  // }
 };
 
 export default App;

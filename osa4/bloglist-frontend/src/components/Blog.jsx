@@ -1,65 +1,60 @@
+import PropTypes from 'prop-types';
 import style from '../styles/blog.module.css';
+import blogService from '../services/blogsService';
+import { setNotification } from '../reducers/notificationReducer';
+import { setBlogs } from '../reducers/blogsReducer';
 import { useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
-const Blog = ({ blogs, likeBlog, removeBlog, user }) => {
-  const [display, setDisplay] = useState('none');
-  const blog = blogs[0];
+const Blog = ({ blogs }) => {
+  const dispatch = useDispatch();
+  const id = useParams().id;
+  const blog = blogs.find((blog) => blog.id === id);
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
-    border: 'solid',
-    borderWidth: 1,
     marginBottom: 5,
     width: '40%',
   };
-  const hidableContent = {
-    display: display,
-  };
 
-  const toggleContentDisplay = (e) => {
-    if (display === 'none') {
-      setDisplay('block');
-      e.target.innerText = 'hide';
-    } else {
-      setDisplay('none');
-      e.target.innerText = 'view';
+  const like = async () => {
+    try {
+      const result = await blogService.updateBlog(blog);
+      console.log('result', result);
+      const newBlogs = blogs.map((b) => (b.id === blog.id ? result : b));
+      newBlogs.sort((a, b) => b.likes - a.likes);
+      dispatch(setBlogs(newBlogs));
+    } catch (ex) {
+      console.log('failed: ', ex);
+      dispatch(
+        setNotification({
+          msg: `Failed to update blog ${blog.title} likes. Error: ${ex}`,
+          type: 'error',
+        }),
+      );
+      timeoutFeedbackMsg();
     }
-  };
-
-  const like = () => likeBlog(blog);
-
-  const remove = () => {
-    if (confirm(`Do u really want to remove ${blog.title} blog`)) removeBlog(blog.id);
   };
 
   return (
     <div className="blog" style={blogStyle}>
+      <h2>
+        {blog.title} {blog.author}
+      </h2>
+      <a href={blog.url}>{blog.url}</a>
       <p>
-        {blog.title}
-        <button className="show-blog-button" onClick={(e) => toggleContentDisplay(e)}>
-          view
+        Likes {blog.likes}
+        <button className="like-button" onClick={like}>
+          like
         </button>
       </p>
-      <div style={hidableContent}>
-        <p>{blog.url}</p>
-        <p>{blog.author}</p>
-        <p>
-          Likes {blog.likes}
-          <button className="like-button" onClick={like}>
-            like
-          </button>
-        </p>
-        <p>{blog.user ? blog.user.name : 'unknown poster'}</p>
-        {user.blogs.includes(blog.id) ? (
-          <button className="remove-blog-button" onClick={remove}>
-            Remove
-          </button>
-        ) : (
-          ''
-        )}
-      </div>
+      <p>added by {blog.user ? blog.user.name : 'unknown poster'}</p>
     </div>
   );
+};
+Blog.propTypes = {
+  blogs: PropTypes.array.isRequired,
 };
 
 const NewBlogForm = ({ postNewBlog }) => {
