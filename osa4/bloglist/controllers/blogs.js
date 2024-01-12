@@ -1,21 +1,21 @@
 /* eslint-disable import/order */
 /* eslint-disable no-underscore-dangle */
-const mongoose = require('mongoose');
-const blogsRouter = require('express').Router();
-const Blog = require('../models/blog');
-const User = require('../models/user');
-const jwt = require('jsonwebtoken');
+const mongoose = require("mongoose");
+const blogsRouter = require("express").Router();
+const Blog = require("../models/blog");
+const User = require("../models/user");
+const jwt = require("jsonwebtoken");
 
-blogsRouter.get('/', async (req, res) => {
-  const blogs = await Blog.find({}).populate('user');
+blogsRouter.get("/", async (req, res) => {
+  const blogs = await Blog.find({}).populate("user");
   res.json(blogs);
 });
 
-blogsRouter.post('/', async (req, res, next) => {
+blogsRouter.post("/", async (req, res, next) => {
   try {
     const decodedToken = jwt.verify(req.token, process.env.SECRET);
     if (!decodedToken.id) {
-      return res.status(401).json({ error: 'token invalid' });
+      return res.status(401).json({ error: "token invalid" });
     }
     const user = await User.findById(decodedToken.id);
     const { body } = req;
@@ -24,26 +24,26 @@ blogsRouter.post('/', async (req, res, next) => {
       ...body,
       user: user._id,
     });
-    console.log('user', user);
+    console.log("user", user);
 
     if (
       !blog.title ||
-      blog.title === 'undefined' ||
+      blog.title === "undefined" ||
       !blog.url ||
-      blog.url === 'undefined'
+      blog.url === "undefined"
     ) {
-      console.log('bad request!!');
-      return res.status(400).send('missing title || url');
+      console.log("bad request!!");
+      return res.status(400).send("missing title || url");
     }
 
-    if (!blog.likes || blog.likes === 'undefined') {
-      console.log('no blog likes!');
+    if (!blog.likes || blog.likes === "undefined") {
+      console.log("no blog likes!");
       blog.likes = 0;
     }
 
     const result = await blog.save();
     user.blogs = user.blogs.concat(result._id);
-    console.log('result', result._id);
+    console.log("result", result._id);
     await user.save();
     result.user = user;
 
@@ -53,15 +53,15 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 });
 
-blogsRouter.post('/:id/comments', async (req, res, next) => {
+blogsRouter.post("/:id/comments", async (req, res, next) => {
   console.log(req);
   const blog = await Blog.findById(req.params.id);
   blog.comments = blog.comments.concat(req.body.comment);
 });
 
-blogsRouter.put('/', async (req, res, next) => {
+blogsRouter.put("/", async (req, res, next) => {
   try {
-    const blog = await Blog.findById(req.body.id).populate('user');
+    const blog = await Blog.findById(req.body.id).populate("user");
     blog.likes += 1;
     const result = await blog.save();
     return res.status(200).json(result);
@@ -70,7 +70,7 @@ blogsRouter.put('/', async (req, res, next) => {
   }
 });
 
-blogsRouter.delete('/:id', async (req, res, next) => {
+blogsRouter.delete("/:id", async (req, res, next) => {
   try {
     const { user } = req;
     const blog = await Blog.findById(req.params.id);
