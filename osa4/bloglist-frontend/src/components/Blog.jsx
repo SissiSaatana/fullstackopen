@@ -1,8 +1,9 @@
 import style from '../styles/blog.module.css';
 import { useState } from 'react';
 
-const Blog = ({ blog, likeBlog, removeBlog, user }) => {
+const Blog = ({ blogs, likeBlog, removeBlog, user }) => {
   const [display, setDisplay] = useState('none');
+  const blog = blogs[0];
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,

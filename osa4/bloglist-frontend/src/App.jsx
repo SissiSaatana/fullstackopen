@@ -11,6 +11,7 @@ import { setNotification } from './reducers/notificationReducer';
 import { setBlogs } from './reducers/blogsReducer';
 import { setUser } from './reducers/userReducer';
 import { useSelector, useDispatch } from 'react-redux';
+import style from './styles/app.module.css';
 
 const App = () => {
   const dispatch = useDispatch();
@@ -76,12 +77,6 @@ const App = () => {
 
   const postNewBlog = async (e) => {
     e.preventDefault();
-    const newBlog = {
-      title: e.target.title.value,
-      author: e.target.author.value,
-      url: e.target.url.value,
-    };
-
     try {
       const newBlog = {
         title: e.target.title.value,
@@ -167,6 +162,10 @@ const App = () => {
             <Route path="/users/:id" element={<Users />} />
             <Route path="/users" element={<Users />} />
             <Route
+              path="/blogs/:id"
+              element={<Blog blogs={blogs} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />}
+            />
+            <Route
               path="/"
               element={
                 <>
@@ -175,7 +174,9 @@ const App = () => {
                   </Togglable>
                   <h2>blogs</h2>
                   {blogs.map((blog) => (
-                    <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
+                    <Link key={blog.id} to={`/blogs/${blog.id}`} className={style['blog-link']}>
+                      {blog.title} {blog.author}
+                    </Link>
                   ))}
                 </>
               }
@@ -185,6 +186,7 @@ const App = () => {
       </div>
     );
   }
+  // <Blog key={blog.id} blog={blog} likeBlog={likeBlog} removeBlog={removeBlog} user={user} />
   // else {
   //   return (
   //     <div>
