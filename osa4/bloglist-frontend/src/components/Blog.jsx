@@ -1,41 +1,41 @@
-import PropTypes from 'prop-types';
-import style from '../styles/blog.module.css';
-import blogService from '../services/blogsService';
-import { setNotification } from '../reducers/notificationReducer';
-import { setBlogs } from '../reducers/blogsReducer';
-import { useState } from 'react';
-import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import PropTypes from 'prop-types'
+import style from '../styles/blog.module.css'
+import blogService from '../services/blogsService'
+import { setNotification } from '../reducers/notificationReducer'
+import { setBlogs } from '../reducers/blogsReducer'
+import { useState } from 'react'
+import { useParams } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
 
 const Blog = ({ blogs }) => {
-  const dispatch = useDispatch();
-  const id = useParams().id;
-  const blog = blogs.find((blog) => blog.id === id);
+  const dispatch = useDispatch()
+  const id = useParams().id
+  const blog = blogs.find((blog) => blog.id === id)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
     marginBottom: 5,
-    width: '40%',
-  };
+    width: '40%'
+  }
 
   const like = async () => {
     try {
-      const result = await blogService.updateBlog(blog);
-      console.log('result', result);
-      const newBlogs = blogs.map((b) => (b.id === blog.id ? result : b));
-      newBlogs.sort((a, b) => b.likes - a.likes);
-      dispatch(setBlogs(newBlogs));
+      const result = await blogService.updateBlog(blog)
+      console.log('result', result)
+      const newBlogs = blogs.map((b) => (b.id === blog.id ? result : b))
+      newBlogs.sort((a, b) => b.likes - a.likes)
+      dispatch(setBlogs(newBlogs))
     } catch (ex) {
-      console.log('failed: ', ex);
+      console.log('failed: ', ex)
       dispatch(
         setNotification({
           msg: `Failed to update blog ${blog.title} likes. Error: ${ex}`,
-          type: 'error',
-        }),
-      );
-      timeoutFeedbackMsg();
+          type: 'error'
+        })
+      )
+      timeoutFeedbackMsg()
     }
-  };
+  }
 
   return (
     <div className="blog" style={blogStyle}>
@@ -51,11 +51,11 @@ const Blog = ({ blogs }) => {
       </p>
       <p>added by {blog.user ? blog.user.name : 'unknown poster'}</p>
     </div>
-  );
-};
+  )
+}
 Blog.propTypes = {
-  blogs: PropTypes.array.isRequired,
-};
+  blogs: PropTypes.array.isRequired
+}
 
 const NewBlogForm = ({ postNewBlog }) => {
   return (
@@ -76,6 +76,6 @@ const NewBlogForm = ({ postNewBlog }) => {
         Create
       </button>
     </form>
-  );
-};
-export { Blog, NewBlogForm };
+  )
+}
+export { Blog, NewBlogForm }

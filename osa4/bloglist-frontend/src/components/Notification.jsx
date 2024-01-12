@@ -1,23 +1,23 @@
 const Notification = ({ msg }) => {
-  let msgStyle;
+  let msgStyle
 
-  if (msg.msg === '') return;
+  if (msg.msg === '') return
 
   msgStyle = {
     borderRadius: '5px',
     fontSize: 16,
-    padding: '.4em',
-  };
-
-  if (msg.type === 'success') {
-    msgStyle.border = '2px solid green';
-    msgStyle.color = 'green';
-  } else if (msg.type === 'error') {
-    msgStyle.border = '2px solid red';
-    msgStyle.color = 'red';
+    padding: '.4em'
   }
 
-  return <p style={msgStyle}>{msg.msg}</p>;
-};
+  if (msg.type === 'success') {
+    msgStyle.border = '2px solid green'
+    msgStyle.color = 'green'
+  } else if (msg.type === 'error') {
+    msgStyle.border = '2px solid red'
+    msgStyle.color = 'red'
+  }
 
-export default Notification;
+  return <p style={msgStyle}>{msg.msg}</p>
+}
+
+export default Notification

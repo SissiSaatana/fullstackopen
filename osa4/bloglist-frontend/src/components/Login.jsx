@@ -1,5 +1,5 @@
-import PropTypes from 'prop-types';
-import style from '../styles/login.module.css';
+import PropTypes from 'prop-types'
+import style from '../styles/login.module.css'
 
 const Login = ({ login, logout, user }) => {
   if (user) {
@@ -7,7 +7,7 @@ const Login = ({ login, logout, user }) => {
       <p>
         {user.name} logged in <button onClick={() => logout()}>Logout</button>
       </p>
-    );
+    )
   } else {
     return (
       <form onSubmit={(e) => login(e)} className={style['login-form']}>
@@ -23,14 +23,14 @@ const Login = ({ login, logout, user }) => {
 
         <button id="login-button">Kirjaudu</button>
       </form>
-    );
+    )
   }
-};
+}
 
 Login.propTypes = {
   login: PropTypes.func.isRequired,
-  logout: PropTypes.func.isRequired,
+  logout: PropTypes.func.isRequired
   // user: Proptypes.object
-};
+}
 
-export default Login;
+export default Login

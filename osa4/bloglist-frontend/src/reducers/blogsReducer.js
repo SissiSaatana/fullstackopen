@@ -1,18 +1,18 @@
 const blogsReducer = (state = [], action) => {
   switch (action.type) {
     case 'SET_BLOG':
-      return action.payload;
+      return action.payload
     default:
-      return state;
+      return state
   }
-};
+}
 
 export const setBlogs = (blogs) => {
-  console.log('setBlogs blogs', blogs);
+  console.log('setBlogs blogs', blogs)
   return {
     type: 'SET_BLOG',
-    payload: blogs,
-  };
-};
+    payload: blogs
+  }
+}
 
-export default blogsReducer;
+export default blogsReducer

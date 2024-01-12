@@ -1,27 +1,27 @@
-import { useState, useEffect } from 'react';
-import usersService from '../services/usersSevice';
-import { useParams, Link } from 'react-router-dom';
+import { useState, useEffect } from 'react'
+import usersService from '../services/usersSevice'
+import { useParams, Link } from 'react-router-dom'
 
 const Users = () => {
-  const [users, setUsers] = useState([]);
-  const [selectedUser, setSelectedUser] = useState({});
-  const id = useParams().id;
+  const [users, setUsers] = useState([])
+  const [selectedUser, setSelectedUser] = useState({})
+  const id = useParams().id
 
   useEffect(() => {
     const fetchUsers = async () => {
-      const users = await usersService.getAll();
-      setUsers(users);
-    };
-    fetchUsers();
-  }, []);
+      const users = await usersService.getAll()
+      setUsers(users)
+    }
+    fetchUsers()
+  }, [])
 
   useEffect(() => {
     if (id !== undefined && users.length) {
-      setSelectedUser(users.find((user) => user.id === id));
+      setSelectedUser(users.find((user) => user.id === id))
     } else {
-      setSelectedUser({});
+      setSelectedUser({})
     }
-  }, [id]);
+  }, [id])
 
   if (Object.keys(selectedUser).length === 0) {
     return (
@@ -46,7 +46,7 @@ const Users = () => {
           </tbody>
         </table>
       </>
-    );
+    )
   }
   return (
     <>
@@ -58,7 +58,7 @@ const Users = () => {
         ))}
       </ul>
     </>
-  );
-};
+  )
+}
 
-export default Users;
+export default Users

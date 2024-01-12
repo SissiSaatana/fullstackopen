@@ -1,5 +1,6 @@
-import axios from 'axios';
-const baseUrl = 'http://localhost:3003/api/login';
+import axios from 'axios'
+
+const baseUrl = 'http://localhost:3003/api/login'
 
 // const postLogin = (user) => {
 //   const req = axios.post(baseUrl, user)
@@ -10,10 +11,10 @@ const baseUrl = 'http://localhost:3003/api/login';
 // }
 
 const postLogin = async (user) => {
-  const res = await axios.post(baseUrl, user).catch((error) => console.log('error', error));
-  const userResponse = res.data.user;
-  userResponse.token = res.data.token;
-  return userResponse;
-};
+  const res = await axios.post(baseUrl, user).catch((error) => console.log('error', error))
+  const userResponse = res.data.user
+  userResponse.token = res.data.token
+  return userResponse
+}
 
-export default { postLogin };
+export default { postLogin }

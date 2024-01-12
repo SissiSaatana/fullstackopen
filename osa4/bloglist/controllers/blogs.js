@@ -53,6 +53,12 @@ blogsRouter.post('/', async (req, res, next) => {
   }
 });
 
+blogsRouter.post('/:id/comments', async (req, res, next) => {
+  console.log(req);
+  const blog = await Blog.findById(req.params.id);
+  blog.comments = blog.comments.concat(req.body.comment);
+});
+
 blogsRouter.put('/', async (req, res, next) => {
   try {
     const blog = await Blog.findById(req.body.id).populate('user');
