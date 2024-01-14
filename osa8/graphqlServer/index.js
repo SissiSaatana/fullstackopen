@@ -1,5 +1,6 @@
 const { ApolloServer, gql } = require("@apollo/server");
 const { startStandaloneServer } = require("@apollo/server/standalone");
+const { v1: uuid } = require("uuid");
 
 let authors = [
   {
@@ -105,7 +106,7 @@ const typeDefs = `
     title: String!
     published: Int!
     author: String!
-    id: String
+    id: ID!
     genres: [String]!
   }
 
@@ -114,7 +115,7 @@ const typeDefs = `
     born: Int
     id: ID!
     books: [Book!]!
-    booksCount: Int!
+    bookCount: Int
   }
 
   type Query {
@@ -123,8 +124,19 @@ const typeDefs = `
     allAuthors: [Author!]!
     authorCount: Int!
   }
+
+  type Mutation {
+    addBook(
+      title: String!,
+      published: Int!,
+      author: String!,
+      genres:[String]
+    ): Book!
+    editAuthor(name: String!, setBornTo: Int!): Author
+  }
 `;
 
+// addBook(title: String!, published: Int!, author: String!): Book!
 // davai
 // why buggin!
 
@@ -133,10 +145,42 @@ const resolvers = {
     allBooks: (root, args) =>
       books
         .filter((book) => (args.author ? book.author === args.author : book))
-        .filter((b, array) => (args.genre ? b.genres.includes(args.genre) : b)),
+        .filter((b) => (args.genre ? b.genres.includes(args.genre) : b)),
     bookCount: () => books.length,
     allAuthors: () => authors,
     authorCount: () => authors.length,
+  },
+  Mutation: {
+    addBook: (root, args) => {
+      const book = { ...args, id: uuid() };
+      books = books.concat(book);
+
+      const authorIndex = authors.findIndex((a) => a.name === args.author);
+      authorIndex === -1
+        ? (authors = authors.concat({
+            name: args.author,
+            id: uuid(),
+            bookCount: 1,
+          }))
+        : (authors[authorIndex].bookCount += 1);
+
+      //  console.log("authors includes", authors.name.includes(args.author));
+      // authors = authors.name.includes(args.author)
+      //   ? authors
+      //   : authors.concat(args.author);
+      return book;
+    },
+    editAuthor: (root, args) => {
+      console.log("root", root);
+      console.log("args", args);
+      const author = authors.find((a) => a.name === args.name);
+      console.log("author", author);
+      if (!author) return null;
+
+      const updateAuthor = { ...author, born: args.setBornTo };
+      authors = authors.map((a) => (a.name === args.name ? updateAuthor : a));
+      return { ...args, born: args.setBornTo };
+    },
   },
 };
 
@@ -150,3 +194,5 @@ startStandaloneServer(server, {
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
+
+// addAuthor(name: String!, born: Int!): Author!
