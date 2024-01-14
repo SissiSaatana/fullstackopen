@@ -85,6 +85,13 @@ let books = [
     genres: ["classic", "crime"],
   },
   {
+    title: "jumala ottaa jumala antaa",
+    published: 1866,
+    author: "Fyodor Dostoevsky",
+    id: "afa5de03-344d-11e9-a414-719c6709cf3e",
+    genres: ["divine", "guidance"],
+  },
+  {
     title: "The Demon ",
     published: 1872,
     author: "Fyodor Dostoevsky",
@@ -123,14 +130,10 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    allBooks: (root, args) => {
-      if (args.author !== undefined) {
-        return books.filter((book) => book.author === args.author);
-      } else if (args.genre !== undefined) {
-        return books.filter((book) => book.genres.includes(args.genre));
-      }
-      return [books];
-    },
+    allBooks: (root, args) =>
+      books
+        .filter((book) => (args.author ? book.author === args.author : book))
+        .filter((b, array) => (args.genre ? b.genres.includes(args.genre) : b)),
     bookCount: () => books.length,
     allAuthors: () => authors,
     authorCount: () => authors.length,
