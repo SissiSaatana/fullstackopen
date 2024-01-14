@@ -1,11 +1,11 @@
 /* eslint-disable import/no-extraneous-dependencies */
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const loginRouter = require('express').Router();
-const User = require('../models/user');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
+const loginRouter = require("express").Router();
+const User = require("../models/user");
 
 // eslint-disable-next-line consistent-return
-loginRouter.post('/', async (request, response) => {
+loginRouter.post("/", async (request, response) => {
   const { username, password } = request.body;
 
   const user = await User.findOne({ username });
@@ -14,7 +14,7 @@ loginRouter.post('/', async (request, response) => {
 
   if (!(user && passwordCorrect)) {
     return response.status(401).json({
-      error: 'invalid username or password',
+      error: "invalid username or password",
     });
   }
 
@@ -27,7 +27,7 @@ loginRouter.post('/', async (request, response) => {
   const token = jwt.sign(userForToken, process.env.SECRET);
 
   user.token = token;
-  console.log('nooo', user);
+  console.log("nooo", user);
 
   response.status(200).json({ user, token });
   // .send({ token, username: user.username, name: user.name })

@@ -53,10 +53,49 @@ blogsRouter.post("/", async (req, res, next) => {
   }
 });
 
-blogsRouter.post("/:id/comments", async (req, res, next) => {
-  console.log(req);
-  const blog = await Blog.findById(req.params.id);
+blogsRouter.put("/:id/comments", async (req, res, next) => {
+  // try {
+  console.log(req.body.comment);
+  const { id } = req.params;
+  const blog = await Blog.findOne({ _id: id });
+  if (blog.comments === undefined) blog.comments = [];
+
   blog.comments = blog.comments.concat(req.body.comment);
+  const result = await blog.save();
+  console.log(result);
+  return res.status(200).json(result);
+
+  // Blog.findOneAndUpdate(
+  //   { _id: id },
+  //   {
+  //     $push: { comments: req.body.comment },
+  //   },
+  //   { new: true }
+  // ).then((data) => {
+  //   console.log("data not updating");
+  //   console.log(data);
+
+  //   return data;
+  // }).catch(error => );
+
+  // console.log(blog);
+  // return res.status(200).json(blog);
+
+  // .then((data, err) => {
+  //   console.log(data);
+  //   return data;
+  //   // return data.status(200).json(data);
+  // });
+
+  // const blog = await Blog.findById(id);
+  // if (blog.comments === undefined) blog.comments = [];
+  // blog.comments.concat(req.body.comment);
+  // const result = await blog.save();
+  // console.log(result);
+  // return res.status(200).json(result);
+  // } catch (error) {
+  //   next(error);
+  // }
 });
 
 blogsRouter.put("/", async (req, res, next) => {

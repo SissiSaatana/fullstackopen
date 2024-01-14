@@ -62,8 +62,10 @@ const commentForm = () => {
   const postComment = async (e) => {
     e.preventDefault()
     try {
-      blog.comments.push(e.target.comment.value)
-      const result = await blogService.updateBlog()
+      blog.comments.push()
+      const result = await blogService.updateBlog(
+        e.target.comment.value
+      )
       console.log('result', result)
       const newBlogs = dispatch(
         setBlogs(blogs.map((b) => (b.id === result.id ? result : b)))
