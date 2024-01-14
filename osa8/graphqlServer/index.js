@@ -93,10 +93,6 @@ let books = [
   },
 ];
 
-/*
-  you can remove the placeholder query once your first one has been implemented 
-*/
-
 const typeDefs = `
   type Book {
     title: String!
@@ -115,7 +111,7 @@ const typeDefs = `
   }
 
   type Query {
-    allBooks: [Book!]!
+    allBooks(author: String): [Book!]!
     bookCount: Int!
     allAuthors: [Author!]!
     authorCount: Int!
@@ -127,14 +123,14 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    allBooks: (root) => [books],
+    allBooks: (root, args) => {
+      if (args.author !== undefined)
+        return books.filter((book) => book.author === args.author);
+      return [books];
+    },
     bookCount: () => books.length,
     allAuthors: () => authors,
     authorCount: () => authors.length,
-  },
-  Author: {
-    booksCount: (author) =>
-      books.filter((book) => book.author === author.name).length,
   },
 };
 
@@ -148,34 +144,3 @@ startStandaloneServer(server, {
 }).then(({ url }) => {
   console.log(`Server ready at ${url}`);
 });
-
-// Query {
-//   authors: {
-//     name,
-//     booksCount: (author) => books.filter((book) => book.author === author.name).length,
-//   }
-// }
-
-// {
-//   console.log(root);
-//   // if (root !== undefined) {
-//   //   return books.filter((book) => book.author === root.name);
-//   // }
-
-//   return books;
-// },
-// allBooks: (author) => {
-//   if (author !== undefined) {
-//     return books.filter((book) => book.author === author.name);
-//   }
-
-//   return books;
-// },
-
-// Author: {
-//   // bookCount: bookCount(),
-// },
-
-// type Query {
-//     authors: [Author!]!
-//   }
