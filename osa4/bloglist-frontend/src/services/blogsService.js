@@ -35,7 +35,7 @@ const deleteBlog = async (blogId) => {
 
 const postComment = async (blogId, comment) => {
   const res = await axios
-    .post(`${baseUrl}/${blogId}/comments`, comment)
+    .put(`${baseUrl}/${blogId}/comments`, { comment: comment })
     .catch((error) => console.log('error', error))
   return res.data
 }
@@ -45,5 +45,6 @@ export default {
   setToken,
   postNewBlog,
   updateBlog,
-  deleteBlog
+  deleteBlog,
+  postComment
 }

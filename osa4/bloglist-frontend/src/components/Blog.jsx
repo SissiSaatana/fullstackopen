@@ -7,9 +7,13 @@ import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 
 const Blog = ({ blogs }) => {
+  console.log('blogs', blogs)
+  console.log('blog id', useParams().id)
+
   const dispatch = useDispatch()
   const id = useParams().id
   const blog = blogs.find((blog) => blog.id === id)
+  console.log('blog with this is id:', blog)
   const blogStyle = {
     paddingTop: 10,
     paddingLeft: 2,
@@ -51,6 +55,14 @@ const Blog = ({ blogs }) => {
         </button>
       </p>
       <p>added by {blog.user ? blog.user.name : 'unknown poster'}</p>
+      <h3>comments:</h3>
+      <ul>
+        {blog.comments.map((comment, index) => {
+          return <li key={index}>{comment}</li>
+        })}
+        <li></li>
+      </ul>
+      <CommentForm blog={blog} blogs={blogs} />
     </div>
   )
 }
@@ -58,27 +70,28 @@ Blog.propTypes = {
   blogs: PropTypes.array.isRequired
 }
 
-const commentForm = () => {
+const CommentForm = ({ blog, blogs }) => {
+  const dispatch = useDispatch()
   const postComment = async (e) => {
+    console.log('triggered')
+
     e.preventDefault()
     try {
-      blog.comments.push()
-      const result = await blogService.updateBlog(
+      const result = await blogService.postComment(
+        blog.id,
         e.target.comment.value
       )
       console.log('result', result)
-      const newBlogs = dispatch(
-        setBlogs(blogs.map((b) => (b.id === result.id ? result : b)))
+
+      const newBlogs = blogs.map((b) =>
+        b.id === blog.id ? result : b
       )
+      dispatch(setBlogs(newBlogs))
     } catch (ex) {
       console.log('failed: ', ex)
-      dispatch(
-        setNotification({
-          msg: `Failed to post comment. Error: ${ex}`,
-          type: 'error'
-        })
-      )
-      timeoutFeedbackMsg()
+      setTimeout(() => {
+        dispatch(setNotification({ msg: '', type: '' }))
+      }, 5000)
     }
   }
 
@@ -116,8 +129,3 @@ const NewBlogForm = ({ postNewBlog }) => {
   )
 }
 export { Blog, NewBlogForm }
-
-const timeoutFeedbackMsg = () =>
-  setTimeout(() => {
-    dispatch(setNotification({ msg: '', type: '' }))
-  }, 5000)
