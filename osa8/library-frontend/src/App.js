@@ -30,7 +30,6 @@ const App = () => {
   return (
     <Router>
       <div>
-        <button onClick={() => setPage("authors")}>authors</button>
         <Link to="/">authors</Link>
         <Link to="/books">books</Link>
         <button onClick={() => setPage("add")}>add book</button>
