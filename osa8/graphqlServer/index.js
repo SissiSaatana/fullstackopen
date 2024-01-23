@@ -110,16 +110,22 @@ const resolvers = {
         });
       }
     },
-    editAuthor: (root, args) => {
-      console.log("root", root);
-      console.log("args", args);
-      const author = authors.find((a) => a.name === args.name);
-      console.log("author", author);
-      if (!author) return null;
-
-      const updateAuthor = { ...author, born: args.setBornTo };
-      authors = authors.map((a) => (a.name === args.name ? updateAuthor : a));
-      return { ...args, born: args.setBornTo };
+    editAuthor: async (root, args) => {
+      try {
+        return await Author.findOneAndUpdate(
+          { name: args.name },
+          { $set: { born: args.setBornTo } },
+          { returnNewDocument: true, returnDocument: "after" }
+        );
+      } catch (error) {
+        throw new GraphQLError("editing author failed", {
+          extensions: {
+            code: "BAD_USER_INPUT",
+            invalidArgs: args,
+            error,
+          },
+        });
+      }
     },
   },
 };
