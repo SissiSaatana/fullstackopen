@@ -14,6 +14,7 @@ const LoginForm = ({ setError, setToken }) => {
 
   useEffect(() => {
     if (result.data) {
+      console.log("result.data", result.data);
       const token = result.data.login.value;
       setToken(token);
       console.log(token);

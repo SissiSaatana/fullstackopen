@@ -98,6 +98,7 @@ const resolvers = {
     allAuthors: async () => Author.find({}).populate("books"),
     authorCount: async () => Author.collection.countDocuments(), // authors.length,
     me: (root, args, context) => {
+      console.log(context.currentUser);
       return context.currentUser;
     },
   },
@@ -117,6 +118,7 @@ const resolvers = {
 
       console.log("currentUser");
       console.log(currentUser);
+      console.log(currentUser.favoriteGenre);
       console.log(context);
       if (!currentUser) {
         throw new GraphQLError("not authenticated", {
@@ -199,6 +201,8 @@ const resolvers = {
     },
 
     login: async (root, args) => {
+      console.log("user login!");
+
       const user = await User.findOne({ username: args.username });
 
       if (!user || args.password !== "secret") {
@@ -208,6 +212,9 @@ const resolvers = {
           },
         });
       }
+
+      console.log(user);
+      console.log(user.favoriteGenre);
 
       const userForToken = {
         username: user.username,

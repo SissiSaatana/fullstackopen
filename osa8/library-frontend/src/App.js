@@ -5,12 +5,13 @@ import NewBook from "./components/NewBook";
 import LoginForm from "./components/Loginform";
 import { useQuery, useApolloClient } from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ALL_AUTHORS, ALL_PERSONS } from "./queries";
+import { ALL_AUTHORS, GET_USER } from "./queries";
 
 const App = () => {
   const [token, setToken] = useState(null);
   const client = useApolloClient();
 
+  const user = useQuery(GET_USER);
   const authors = useQuery(ALL_AUTHORS);
 
   if (authors.loading) return <div>loading...</div>;
@@ -27,6 +28,7 @@ const App = () => {
 
   console.log("authors: " + authors.data);
   console.log("authors: ", authors.data.allAuthors);
+  console.log("user: ", user);
   // <Notify errorMessage={errorMessage} />;
   if (!token) {
     return (
@@ -39,6 +41,7 @@ const App = () => {
 
   return (
     <Router>
+      <p>favoriteGenre: {user.data.favoriteGenre}</p>
       <div>
         <Link className="link" to="/">
           authors
