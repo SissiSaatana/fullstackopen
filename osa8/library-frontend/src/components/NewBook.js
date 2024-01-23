@@ -23,16 +23,6 @@ const CREATE_BOOK = gql`
   }
 `;
 
-// type Mutation {
-//   addBook(
-//     title: String!,
-//     published: Int!,
-//     author: String!,
-//     genres:[String]
-//   ): Book!
-//   editAuthor(name: String!, setBornTo: Int!): Author
-// }
-
 const NewBook = () => {
   const [title, setTitle] = useState("");
   const [author, setAuthor] = useState("");
@@ -46,20 +36,15 @@ const NewBook = () => {
 
   const submit = async (event) => {
     event.preventDefault();
-
-    console.log("published", published);
-    console.log("published", typeof +published);
     createBook({
       variables: { title, author, genres, published: +published },
     });
 
-    console.log("add book...");
-
-    // setTitle("");
-    // setPublished("");
-    // setAuthor("");
-    // setGenres([]);
-    // setGenre("");
+    setTitle("");
+    setPublished("");
+    setAuthor("");
+    setGenres([]);
+    setGenre("");
   };
 
   const addGenre = () => {

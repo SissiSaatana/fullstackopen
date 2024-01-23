@@ -1,3 +1,5 @@
+import SetAuthorBirthYear from "./SetAuthorBirthYear";
+
 const Authors = ({ authors }) => {
   if (!authors) {
     return null;
@@ -24,6 +26,8 @@ const Authors = ({ authors }) => {
           ))}
         </tbody>
       </table>
+
+      <SetAuthorBirthYear />
     </div>
   );
 };
