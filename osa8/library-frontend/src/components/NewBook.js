@@ -1,29 +1,27 @@
 import { useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { ALL_AUTHORS, ALL_BOOKS } from "../queries";
 
-const ADD_BOOK = gql`
-  query {
-    allAuthors {
-      name
-      born
-      booksCount
+const CREATE_BOOK = gql`
+  mutation createBook(
+    $title: String!
+    $author: String!
+    $genres: [String]!
+    $published: Int!
+  ) {
+    addBook(
+      title: $title
+      author: $author
+      genres: $genres
+      published: $published
+    ) {
+      title
+      author
+      published
+      id
     }
   }
 `;
-
-mutation createBook($title: String!, $author: String!, $genres: [String]!, $published: Int!) {
-  addBook(
-    title: $title,
-    author: $author,
-    genres: $genres,
-    published: $published
-  ) {
-    title
-    author
-    published
-    id
-  }
-}
 
 // type Mutation {
 //   addBook(
@@ -42,16 +40,26 @@ const NewBook = () => {
   const [genre, setGenre] = useState("");
   const [genres, setGenres] = useState([]);
 
+  const [createBook] = useMutation(CREATE_BOOK, {
+    refetchQueries: [{ query: ALL_AUTHORS }, { query: ALL_BOOKS }],
+  });
+
   const submit = async (event) => {
     event.preventDefault();
 
+    console.log("published", published);
+    console.log("published", typeof +published);
+    createBook({
+      variables: { title, author, genres, published: +published },
+    });
+
     console.log("add book...");
 
-    setTitle("");
-    setPublished("");
-    setAuthor("");
-    setGenres([]);
-    setGenre("");
+    // setTitle("");
+    // setPublished("");
+    // setAuthor("");
+    // setGenres([]);
+    // setGenre("");
   };
 
   const addGenre = () => {
@@ -60,7 +68,7 @@ const NewBook = () => {
   };
 
   return (
-    <div>
+    <div className="newbook-form">
       <form onSubmit={submit}>
         <div>
           title

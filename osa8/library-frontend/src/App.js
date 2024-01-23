@@ -2,18 +2,9 @@ import { useState } from "react";
 import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
-import { gql, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
-const ALL_AUTHORS = gql`
-  query {
-    allAuthors {
-      name
-      born
-      booksCount
-    }
-  }
-`;
+import { ALL_AUTHORS } from "./queries";
 
 const App = () => {
   const [page, setPage] = useState("authors");
@@ -30,9 +21,15 @@ const App = () => {
   return (
     <Router>
       <div>
-        <Link to="/">authors</Link>
-        <Link to="/books">books</Link>
-        <Link to="/newbook">add book</Link>
+        <Link className="link" to="/">
+          authors
+        </Link>
+        <Link className="link" to="/books">
+          books
+        </Link>
+        <Link className="link" to="/newbook">
+          add book
+        </Link>
       </div>
 
       <Routes>
