@@ -1,32 +1,63 @@
-import { useState } from 'react'
+import { useState } from "react";
+import { gql, useMutation } from "@apollo/client";
 
-const NewBook = (props) => {
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [published, setPublished] = useState('')
-  const [genre, setGenre] = useState('')
-  const [genres, setGenres] = useState([])
-
-  if (!props.show) {
-    return null
+const ADD_BOOK = gql`
+  query {
+    allAuthors {
+      name
+      born
+      booksCount
+    }
   }
+`;
+
+mutation createBook($title: String!, $author: String!, $genres: [String]!, $published: Int!) {
+  addBook(
+    title: $title,
+    author: $author,
+    genres: $genres,
+    published: $published
+  ) {
+    title
+    author
+    published
+    id
+  }
+}
+
+// type Mutation {
+//   addBook(
+//     title: String!,
+//     published: Int!,
+//     author: String!,
+//     genres:[String]
+//   ): Book!
+//   editAuthor(name: String!, setBornTo: Int!): Author
+// }
+
+const NewBook = () => {
+  const [title, setTitle] = useState("");
+  const [author, setAuthor] = useState("");
+  const [published, setPublished] = useState("");
+  const [genre, setGenre] = useState("");
+  const [genres, setGenres] = useState([]);
 
   const submit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
 
-    console.log('add book...')
+    console.log("add book...");
 
-    setTitle('')
-    setPublished('')
-    setAuthor('')
-    setGenres([])
-    setGenre('')
-  }
+    setTitle("");
+    setPublished("");
+    setAuthor("");
+    setGenres([]);
+    setGenre("");
+  };
 
   const addGenre = () => {
-    setGenres(genres.concat(genre))
-    setGenre('')
-  }
+    setGenres(genres.concat(genre));
+    setGenre("");
+  };
 
   return (
     <div>
@@ -62,11 +93,11 @@ const NewBook = (props) => {
             add genre
           </button>
         </div>
-        <div>genres: {genres.join(' ')}</div>
+        <div>genres: {genres.join(" ")}</div>
         <button type="submit">create book</button>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default NewBook
+export default NewBook;

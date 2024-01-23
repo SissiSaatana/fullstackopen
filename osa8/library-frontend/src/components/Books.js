@@ -14,7 +14,6 @@ const Books = () => {
   const books = useQuery(ALL_BOOKS);
 
   if (books.loading) return <div>loading...</div>;
-  // useEffect(() => {}, [books]);
 
   console.log("books", books);
   console.log("books data", books.data);

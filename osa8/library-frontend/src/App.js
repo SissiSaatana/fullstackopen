@@ -32,18 +32,17 @@ const App = () => {
       <div>
         <Link to="/">authors</Link>
         <Link to="/books">books</Link>
-        <button onClick={() => setPage("add")}>add book</button>
+        <Link to="/newbook">add book</Link>
       </div>
 
       <Routes>
         <Route path="/books" element={<Books />} />
+        <Route path="/newbook" element={<NewBook />} />
         <Route
           path="/"
           element={<Authors authors={authors.data.allAuthors} />}
         />
       </Routes>
-
-      <NewBook show={page === "add"} />
     </Router>
   );
 };
