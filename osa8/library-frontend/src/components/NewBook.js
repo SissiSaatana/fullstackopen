@@ -16,9 +16,12 @@ const CREATE_BOOK = gql`
       published: $published
     ) {
       title
-      author
       published
       id
+      author {
+        name
+        born
+      }
     }
   }
 `;
