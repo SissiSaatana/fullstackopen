@@ -5,7 +5,9 @@ import { useState } from "react";
 const Books = () => {
   const [genre, setGenre] = useState("");
   const booksToShow = useQuery(ALL_BOOKS, { variables: { genre: genre } });
-  const genres = useQuery(GET_UNIQUE_BOOK_GENRES);
+  const genres = useQuery(GET_UNIQUE_BOOK_GENRES, {
+    refetchQueries: [{ query: ALL_BOOKS }],
+  });
 
   if (booksToShow.loading) return <div>loading...</div>;
 
