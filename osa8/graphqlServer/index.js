@@ -52,6 +52,7 @@ const typeDefs = `
 
   type Query {
     allBooks(author: String, genre: String): [Book!]!
+    uniqueBookGenres: [String!]!
     booksCount: Int!
     allAuthors: [Author!]!
     authorCount: Int!
@@ -92,6 +93,11 @@ const resolvers = {
           args.author ? book.author.name === args.author : book
         )
         .filter((b) => (args.genre ? b.genres.includes(args.genre) : b));
+    },
+    uniqueBookGenres: async () => {
+      const genres = await Book.distinct("genres");
+      console.log("genres", genres);
+      return genres;
     },
 
     booksCount: async () => Book.collection.countDocuments(), // books.length,

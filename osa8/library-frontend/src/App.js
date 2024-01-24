@@ -3,6 +3,7 @@ import Authors from "./components/Authors";
 import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/Loginform";
+import FavoriteGenre from "./components/FavoriteGenre";
 import { useQuery, useApolloClient } from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import { ALL_AUTHORS, GET_USER } from "./queries";
@@ -10,7 +11,6 @@ import { ALL_AUTHORS, GET_USER } from "./queries";
 const App = () => {
   const [token, setToken] = useState(null);
   const client = useApolloClient();
-
   const user = useQuery(GET_USER);
   const authors = useQuery(ALL_AUTHORS);
 
@@ -41,7 +41,6 @@ const App = () => {
 
   return (
     <Router>
-      <p>favoriteGenre: {user.data.favoriteGenre}</p>
       <div>
         <Link className="link" to="/">
           authors
@@ -52,6 +51,9 @@ const App = () => {
         <Link className="link" to="/newbook">
           add book
         </Link>
+        <Link className="link" to="/recommend">
+          recommend
+        </Link>
 
         <button onClick={logout}>logout</button>
       </div>
@@ -59,6 +61,10 @@ const App = () => {
       <Routes>
         <Route path="/books" element={<Books />} />
         <Route path="/newbook" element={<NewBook />} />
+        <Route
+          path="/recommend"
+          element={<FavoriteGenre user={user.data.me} />}
+        />
         <Route
           path="/"
           element={<Authors authors={authors.data.allAuthors} />}

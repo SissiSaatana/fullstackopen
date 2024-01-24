@@ -1,25 +1,13 @@
-import { gql, useQuery } from "@apollo/client";
-import { ALL_BOOKS } from "../queries";
+import { useQuery } from "@apollo/client";
+import { ALL_BOOKS, GET_UNIQUE_BOOK_GENRES } from "../queries";
 import { useState } from "react";
 
 const Books = () => {
   const [genre, setGenre] = useState("");
-  const books = useQuery(ALL_BOOKS);
-  // const [genres, setGenres] = useState([]);
+  const booksToShow = useQuery(ALL_BOOKS, { variables: { genre: genre } });
+  const genres = useQuery(GET_UNIQUE_BOOK_GENRES);
 
-  if (books.loading) return <div>loading...</div>;
-
-  console.log("books", books);
-  console.log("books data", books.data);
-  // const genres = [...new Set(books.data.allBooks.map((book) => book.genres))];
-  const genres = [
-    ...new Set(books.data.allBooks.map((book) => book.genres).flat(1)),
-  ];
-  console.log("genres", genres);
-  console.log("genre", genre);
-  console.log(
-    books.data.allBooks.filter((b) => (genre ? b.genres.includes(genre) : b))
-  );
+  if (booksToShow.loading) return <div>loading...</div>;
 
   return (
     <div>
@@ -33,24 +21,24 @@ const Books = () => {
             <th>author</th>
             <th>published</th>
           </tr>
-          {books.data.allBooks
-            .filter((b) => (genre ? b.genres.includes(genre) : b))
-            .map((a) => (
-              <tr key={a.title}>
-                <td>{a.title}</td>
-                <td>{a.author.name}</td>
-                <td>{a.published}</td>
-              </tr>
-            ))}
+          {booksToShow.data.allBooks.map((a) => (
+            <tr key={a.title}>
+              <td>{a.title}</td>
+              <td>{a.author.name}</td>
+              <td>{a.published}</td>
+            </tr>
+          ))}
         </tbody>
       </table>
 
       <div>
-        {genres.map((g, index) => (
-          <button key={g} onClick={() => setGenre(g)}>
-            {g}
-          </button>
-        ))}
+        {genres.data
+          ? genres.data.uniqueBookGenres.map((genre) => (
+              <button key={genre} onClick={() => setGenre(genre)}>
+                {genre}
+              </button>
+            ))
+          : null}
       </div>
     </div>
   );
