@@ -6,7 +6,7 @@ import LoginForm from "./components/Loginform";
 import FavoriteGenre from "./components/FavoriteGenre";
 import { useQuery, useApolloClient, useSubscription } from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ALL_AUTHORS, GET_USER, BOOK_ADDED } from "./queries";
+import { ALL_AUTHORS, GET_USER, BOOK_ADDED, ALL_BOOKS } from "./queries";
 
 const App = () => {
   const [token, setToken] = useState(null);
@@ -16,7 +16,10 @@ const App = () => {
 
   useSubscription(BOOK_ADDED, {
     onData: ({ data }) => {
-      console.log(data);
+      console.log("data");
+      const bookAdded = data.data.bookAdded;
+
+      window.alert(`New book added: ${bookAdded.title}`);
     },
   });
 

@@ -45,6 +45,17 @@ export const LOGIN = gql`
   }
 `;
 
+const BOOK = gql`
+  fragment book on Book {
+    title
+    author {
+      name
+    }
+    published
+    genres
+  }
+`;
+
 export const BOOK_ADDED = gql`
   subscription {
     bookAdded {
