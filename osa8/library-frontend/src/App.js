@@ -4,15 +4,21 @@ import Books from "./components/Books";
 import NewBook from "./components/NewBook";
 import LoginForm from "./components/Loginform";
 import FavoriteGenre from "./components/FavoriteGenre";
-import { useQuery, useApolloClient } from "@apollo/client";
+import { useQuery, useApolloClient, useSubscription } from "@apollo/client";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { ALL_AUTHORS, GET_USER } from "./queries";
+import { ALL_AUTHORS, GET_USER, BOOK_ADDED } from "./queries";
 
 const App = () => {
   const [token, setToken] = useState(null);
   const client = useApolloClient();
   const user = useQuery(GET_USER);
   const authors = useQuery(ALL_AUTHORS);
+
+  useSubscription(BOOK_ADDED, {
+    onData: ({ data }) => {
+      console.log(data);
+    },
+  });
 
   if (authors.loading) return <div>loading...</div>;
 
