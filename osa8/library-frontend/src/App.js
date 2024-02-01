@@ -14,15 +14,6 @@ const App = () => {
   const user = useQuery(GET_USER);
   const authors = useQuery(ALL_AUTHORS);
 
-  useSubscription(BOOK_ADDED, {
-    onData: ({ data }) => {
-      console.log("data");
-      const bookAdded = data.data.bookAdded;
-
-      window.alert(`New book added: ${bookAdded.title}`);
-    },
-  });
-
   if (authors.loading) return <div>loading...</div>;
 
   const logout = () => {
