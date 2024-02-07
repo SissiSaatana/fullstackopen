@@ -1,4 +1,4 @@
-const calculateBmi = (heightInCm: number, weight: number): string => {
+export const calculateBmi = (heightInCm: number, weight: number): string => {
   const heightInMeters = heightInCm / 100;
   const BMI: number = weight / (heightInMeters * heightInMeters);
 
@@ -41,4 +41,4 @@ const calculateBmi = (heightInCm: number, weight: number): string => {
   }
 }
 
-console.log(calculateBmi(+process.argv[2], +process.argv[3]))
+// console.log(calculateBmi(+process.argv[2], +process.argv[3]))
