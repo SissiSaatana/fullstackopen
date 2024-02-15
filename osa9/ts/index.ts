@@ -18,6 +18,13 @@ app.get('/bmi', (req, res) => {
   }
 });
 
+// exercises 
+app.get('/exercises', (req, res) => {
+  console.log(req.query);
+  return res.status(400).json({ exercise: 'success' });
+});
+
+
 const PORT = 3003;
 
 app.listen(PORT, () => {
