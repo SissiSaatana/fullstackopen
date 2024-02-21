@@ -1,7 +1,12 @@
 import express from 'express';
+import { Request } from 'express';
+
 import { calculateBmi } from './bmiCalculator';
+import { calculateExercises } from './exerciseCalculator';
+import { postBody } from './postBody';
 
 const app = express();
+app.use(express.json());
 
 app.get('/bmi', (req, res) => {
   const weight: number = +req.query.weight!;
@@ -19,9 +24,20 @@ app.get('/bmi', (req, res) => {
 });
 
 // exercises 
-app.get('/exercises', (req, res) => {
-  console.log(req.query);
-  return res.status(400).json({ exercise: 'success' });
+app.post('/exercises', (req: Request<NonNullable<unknown>, NonNullable<unknown>, postBody>, res) => {
+
+  console.log('isNaN(req.body.target)');
+  console.log(isNaN(req.body.target));
+
+  if (!req.body.daily_exercises || !req.body.target) {
+    return res.status(400).json({ error: 'parameters missing' });
+  }
+
+  if (req.body.daily_exercises.some(isNaN) || isNaN(req.body.target)) {
+    return res.status(400).json({ error: "malformatted parameters" });
+  }
+
+  return res.status(200).json(calculateExercises(req.body.daily_exercises, req.body.target));
 });
 
 

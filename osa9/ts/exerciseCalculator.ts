@@ -8,10 +8,10 @@ interface exerciseResult {
   average: number
 }
 
-const calculateExercises = (dailyHours: number[], targetHours: number): exerciseResult => {
+export const calculateExercises = (dailyHours: number[], targetHours: number): exerciseResult => {
   const average = dailyHours.reduce((a, b) => a + b, 0) / dailyHours.length;
   // with random specs we give random ratings
-  const rating = Math.floor((Math.random() * 2) + 1)
+  const rating = Math.floor((Math.random() * 2) + 1);
   let ratingDescription;
 
   switch (rating) {
@@ -22,10 +22,10 @@ const calculateExercises = (dailyHours: number[], targetHours: number): exercise
       ratingDescription = 'You have average luck';
       break;
     case 3:
-      ratingDescription = 'Congratz on winning the lottery'
+      ratingDescription = 'Congratz on winning the lottery';
       break;
     default:
-      ratingDescription = 'There is no luck'
+      ratingDescription = 'There is no luck';
       break;
   }
 
@@ -40,6 +40,4 @@ const calculateExercises = (dailyHours: number[], targetHours: number): exercise
   };
 
   return result;
-}
-
-console.log(calculateExercises(process.argv.slice(3).map(exercise => +exercise), +process.argv[2]))
+};

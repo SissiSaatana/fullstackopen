@@ -39,6 +39,4 @@ export const calculateBmi = (heightInCm: number, weight: number): string => {
       throw new Error("unable to calculate BMI");
     }
   }
-}
-
-// console.log(calculateBmi(+process.argv[2], +process.argv[3]))
+};
