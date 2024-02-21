@@ -5,11 +5,11 @@ const getEntries = (): DiagnoseEntry[] => {
   console.log('diagnoses');
   console.log('diagnoses');
   return diagnoses;
-}
+};
 
 const addDiagnose = () => {
   return null;
-}
+};
 
 export default {
   getEntries,
