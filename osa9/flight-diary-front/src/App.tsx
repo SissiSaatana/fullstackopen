@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DiaryEntry, NonSensitiveDiaryEntry } from "./types";
+import { DiaryEntry, NonSensitiveDiaryEntry, NewDiaryEntry, Visibility, Weather } from "./types";
 import axios from "axios";
 
 const DiaryEntries = ({ entries }: { entries: NonSensitiveDiaryEntry[] }) => {
@@ -17,23 +17,23 @@ const DiaryEntries = ({ entries }: { entries: NonSensitiveDiaryEntry[] }) => {
   );
 };
 
-const EntryForm = ({createEntry}) => {
+const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void}) => {
   const [newDate, setNewDate] = useState("");
-  const [newVisibility, setNewVisibility] = useState("");
-  const [newWeather, setNewWeather] = useState("");
+  const [newVisibility, setNewVisibility] =  useState<Visibility | string>("");
+  const [newWeather, setNewWeather] = useState("" as Weather);
   const [newComment, setNewComment] = useState("");
 
   const toEntry = (event: React.SyntheticEvent) => {
     event.preventDefault();
     createEntry({
       date: newDate,
-      visibility: newVisibility,
+      visibility: newVisibility  as Visibility,
       weather: newWeather,
       comment: newComment,
     });
     setNewDate("");
-    setNewVisibility("");
-    setNewWeather("");
+    setNewVisibility("" as Visibility);
+    setNewWeather("" as Weather);
     setNewComment("");
   };
 
@@ -41,7 +41,7 @@ const EntryForm = ({createEntry}) => {
     <form onSubmit={toEntry} >
       Date <input value={newDate} onChange={(event) => setNewDate(event.target.value)} />
       Visibility <input value={newVisibility} onChange={(event) => setNewVisibility(event.target.value)} />
-      Weather <input value={newWeather} onChange={(event) => setNewWeather(event.target.value)} />
+      Weather <input value={newWeather} onChange={(event) => setNewWeather(event.target.value as Weather)} />
       Comment <input value={newComment} onChange={(event) => setNewComment(event.target.value)} />
       <button type='submit'>add</button>
     </form>
@@ -52,12 +52,13 @@ const EntryForm = ({createEntry}) => {
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
   
-  const createEntry = (entry: DiaryEntry) => {
-    axios.post<DiaryEntry>("http://localhost:3000/api/diaries", entry)
+  const postEntry = (entry: DiaryEntry) => {
+    axios
+      .post<DiaryEntry>("http://localhost:3000/api/diaries", entry)
       .then((response) => {
         setDiaryEntries(diaryEntries.concat(response.data));
       });
-  }
+  };
 
    useEffect(() => {
      axios.get<DiaryEntry[]>("http://localhost:3000/api/diaries").then((response) => {
@@ -69,7 +70,7 @@ const App = () => {
 
   return (
     <>
-      <EntryForm createEntry={createEntry} />
+      <EntryForm createEntry={postEntry} />
       <DiaryEntries entries={diaryEntries} />
     </>
   )

@@ -9,6 +9,15 @@ router.get('/', (_req, res) => {
   res.send(patientsService.getPatientsWithoutSnn());
 });
 
+
+router.get('/:id', (req, _res) => { 
+  console.log('req.params.id', req.params.id);
+  // console.log('res', res);
+  console.log('davai!!');
+
+
+});
+
 router.post('/', (req, res) => {
   try {
     const newPatient = toNewPatient(req.body);
