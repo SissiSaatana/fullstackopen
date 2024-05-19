@@ -17,6 +17,15 @@ const DiaryEntries = ({ entries }: { entries: NonSensitiveDiaryEntry[] }) => {
   );
 };
 
+const ErrorMsg = ( {msg} ) => {
+  if (!msg) {
+    return
+  }
+  return (
+    <p>You have a error: {msg}</p>
+  )
+} 
+
 const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void}) => {
   const [newDate, setNewDate] = useState("");
   const [newVisibility, setNewVisibility] =  useState<Visibility | string>("");
@@ -51,13 +60,30 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
 
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
+  const [errorMsg, setErrorMsg] = useState('');
   
-  const postEntry = (entry: DiaryEntry) => {
-    axios
-      .post<DiaryEntry>("http://localhost:3000/api/diaries", entry)
-      .then((response) => {
-        setDiaryEntries(diaryEntries.concat(response.data));
-      });
+  const postEntry = async (entry: DiaryEntry) => {
+    try {
+      const response = await axios.post<DiaryEntry>("http://localhost:3000/api/diaries", entry);
+      console.log(response);
+      setDiaryEntries(diaryEntries.concat(response.data));
+      setErrorMsg('');
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        console.error(error.response);
+        setErrorMsg(error.response!.data);
+        console.log('axios error')
+        // Do something with this error...
+      } else {
+        console.error(error);
+      }
+    }
+
+    // axios
+    //   .post<DiaryEntry>("http://localhost:3000/api/diaries", entry)
+    //   .then((response) => {
+    //     setDiaryEntries(diaryEntries.concat(response.data));
+    //   });
   };
 
    useEffect(() => {
@@ -66,14 +92,14 @@ const App = () => {
      });
    }, []);
 
-   
-
   return (
     <>
+      <h2>Adding new entry</h2>
+      <ErrorMsg msg={errorMsg}></ErrorMsg>
       <EntryForm createEntry={postEntry} />
       <DiaryEntries entries={diaryEntries} />
     </>
-  )
+  );
 }
 
 export default App
