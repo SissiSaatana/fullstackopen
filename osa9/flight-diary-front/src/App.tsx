@@ -11,7 +11,6 @@ const DiaryEntries = ({ entries }: { entries: NonSensitiveDiaryEntry[] }) => {
           <h2>{entry.date}</h2>
           <p>visibility {entry.visibility}</p>
           <p>weather {entry.weather}</p>
-          {entry.}
         </div>
       ))}
     </>
