@@ -6,7 +6,6 @@ import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
 import { Patient } from "../../types";
 
-
 const PatientPage = () => { 
    const [patient, setPatient] = useState<Patient>();
   const { id }  = useParams();

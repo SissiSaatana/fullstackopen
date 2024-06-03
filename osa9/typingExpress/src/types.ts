@@ -1,4 +1,4 @@
-export interface DiagnoseEntry {
+export interface Diagnosis {
   code: string;
   name: string;
   latin?: string;
@@ -35,3 +35,11 @@ export interface Patient {
 
 
 export type NonSensitivePatient = Omit<Patient, 'ssn' | 'entries'>;
+
+// interface BaseEntry {
+//   id: string;
+//   description: string;
+//   date: string;
+//   specialist: string;
+//   diagnosisCodes?: Diagnosis['code'][];
+// }

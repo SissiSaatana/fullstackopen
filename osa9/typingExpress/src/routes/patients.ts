@@ -11,9 +11,6 @@ router.get('/', (_req, res) => {
 
 
 router.get('/:id', (req, res) => { 
-  console.log('req.params.id', req.params.id);
-  // console.log('res', res);
-  console.log('davai!!');
   res.send(patientsService.getPatient(req.params.id));
 });
 
