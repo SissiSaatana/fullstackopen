@@ -11,20 +11,12 @@ const DiaryEntries = ({ entries }: { entries: NonSensitiveDiaryEntry[] }) => {
           <h2>{entry.date}</h2>
           <p>visibility {entry.visibility}</p>
           <p>weather {entry.weather}</p>
+          {entry.}
         </div>
       ))}
     </>
   );
 };
-
-const ErrorMsg = ( {msg} ) => {
-  if (!msg) {
-    return
-  }
-  return (
-    <p>You have a error: {msg}</p>
-  )
-} 
 
 const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void}) => {
   const [newDate, setNewDate] = useState("");
@@ -64,7 +56,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         checked
         onChange={(event) => setNewVisibility(event.target.value)}
       />
-      <label for="great">Great</label>
+      <label htmlFor="great">Great</label>
       <input
         type="radio"
         id="good"
@@ -72,7 +64,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="good"
         onChange={(event) => setNewVisibility(event.target.value)}
       />
-      <label for="good">Good</label>
+      <label htmlFor="good">Good</label>
       <input
         type="radio"
         id="ok"
@@ -80,7 +72,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="ok"
         onChange={(event) => setNewVisibility(event.target.value)}
       />
-      <label for="ok">Ok</label>
+      <label htmlFor="ok">Ok</label>
       <input
         type="radio"
         id="poor"
@@ -88,7 +80,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="poor"
         onChange={(event) => setNewVisibility(event.target.value)}
       />
-      <label for="poor">Poor</label>
+      <label htmlFor="poor">Poor</label>
       {/* <input
         value={newVisibility}
         onChange={(event) => setNewVisibility(event.target.value)}
@@ -103,7 +95,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         checked
         onChange={(event) => setNewWeather(event.target.value as Weather)}        
       />
-      <label for="sunny">Sunny</label>
+      <label htmlFor="sunny">Sunny</label>
       <input
         type="radio"
         id="rainy"
@@ -111,7 +103,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="rainy"
         onChange={(event) => setNewWeather(event.target.value as Weather)}
       />
-      <label for="rainy">Rainy</label>
+      <label htmlFor="rainy">Rainy</label>
       <input
         type="radio"
         id="cloudy"
@@ -119,7 +111,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="cloudy"
         onChange={(event) => setNewWeather(event.target.value as Weather)}
       />
-      <label for="cloudy">Cloudy</label>
+      <label htmlFor="cloudy">Cloudy</label>
       <input
         type="radio"
         id="stormy"
@@ -127,7 +119,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="stormy"
         onChange={(event) => setNewWeather(event.target.value as Weather)}
       />
-      <label for="stormy">Stormy</label>
+      <label htmlFor="stormy">Stormy</label>
       <input
         type="radio"
         id="windy"
@@ -135,7 +127,7 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
         value="windy"
         onChange={(event) => setNewWeather(event.target.value as Weather)}
       />
-      <label for="windy">Windy</label>
+      <label htmlFor="windy">Windy</label>
       <br />
       Comment{" "}
       <input
@@ -152,9 +144,9 @@ const EntryForm = ({createEntry }: {createEntry:(entry: NewDiaryEntry) => void})
 
 const App = () => {
   const [diaryEntries, setDiaryEntries] = useState<DiaryEntry[]>([]);
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState<string>('');
   
-  const postEntry = async (entry: DiaryEntry) => {
+  const postEntry = async (entry: NewDiaryEntry) => {
     try {
       const response = await axios.post<DiaryEntry>("http://localhost:3000/api/diaries", entry);
       console.log(response);
@@ -187,7 +179,7 @@ const App = () => {
   return (
     <>
       <h2>Adding new entry</h2>
-      <ErrorMsg msg={errorMsg}></ErrorMsg>
+      {errorMsg && <p style={{ color: "red" }}>{errorMsg}</p>}
       <EntryForm createEntry={postEntry} />
       <DiaryEntries entries={diaryEntries} />
     </>
