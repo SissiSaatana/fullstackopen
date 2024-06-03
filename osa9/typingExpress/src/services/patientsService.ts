@@ -7,6 +7,10 @@ const getPatients = (): Patient[] => {
   return patients;
 };
 
+const getPatient = (id:string): Patient | undefined => {
+  return patients.find(p => p.id === id);
+};
+
 const getPatientsWithoutSnn = (): PatientWithoutSnn[] => {
   return patients.map(({ ssn, ...rest }) => rest);
 };
@@ -26,5 +30,6 @@ const addPatient = (patient: NewPatient): Patient => {
 export default {
   getPatients,
   addPatient,
-  getPatientsWithoutSnn
+  getPatientsWithoutSnn,
+  getPatient
 };
