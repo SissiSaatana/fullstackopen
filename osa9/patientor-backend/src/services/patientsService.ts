@@ -2,7 +2,6 @@ import patients from '../data/patients';
 import { NewPatient, Patient, PatientWithoutSnn } from '../types';
 import { v1 as uuid } from 'uuid';
 
-
 const getPatients = (): Patient[] => {
   return patients;
 };
@@ -12,7 +11,7 @@ const getPatient = (id:string): Patient | undefined => {
 };
 
 const getPatientsWithoutSnn = (): PatientWithoutSnn[] => {
-  return patients.map(({ ssn, ...rest }) => rest);
+  return patients.map(({ssn, ...rest }) => rest);
 };
 
 const addPatient = (patient: NewPatient): Patient => {
