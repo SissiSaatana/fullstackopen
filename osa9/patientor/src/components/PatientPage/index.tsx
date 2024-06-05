@@ -17,6 +17,7 @@ const PatientPage = () => {
       const fetchPatient = async () => {
         const patient = await patientService.getPatient(id);
         setPatient(patient);
+        console.log(patient);
       };
       void fetchPatient();
     }, []);
@@ -25,8 +26,21 @@ const PatientPage = () => {
       <h1>{patient && patient.name}</h1>
       <p>ssh: {patient && patient.ssn}</p>
       <p>occupation: {patient && patient.occupation}</p>
+      <h2>entries</h2>
+      {patient?.entries.map((e) => (
+        <div>
+          <p>
+            {e.date} {e.description}
+          </p>
+          <ul>
+            {e.diagnosisCodes?.map((diagnose) => (
+              <li>{diagnose}</li>
+            ))}
+          </ul>
+        </div>
+      ))}
     </div>
-    );
+  );
 };
 
 export default PatientPage;
