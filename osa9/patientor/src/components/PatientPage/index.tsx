@@ -1,26 +1,35 @@
-// import { useState } from "react";
-// import { Patient } from "../../types";
-
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import patientService from "../../services/patients";
-import { Patient } from "../../types";
+import diagnosesService from "../../services/diagnoses";
+import { Diagnosis, Patient } from "../../types";
 
 const PatientPage = () => { 
-   const [patient, setPatient] = useState<Patient>();
+  const [patient, setPatient] = useState<Patient>();
+  const [diagnoses, setDiagnoses] = useState<Diagnosis[]>();
   const { id }  = useParams();
-  console.log(id);
 
-    useEffect(() => {
-      // void axios.get<void>(`${apiBaseUrl}/ping`);
+  useEffect(() => {
+    // void axios.get<void>(`${apiBaseUrl}/ping`);
+    const fetchPatient = async () => {
+      const patient = await patientService.getPatient(id);
+      setPatient(patient);
+    };
+    void fetchPatient();
 
-      const fetchPatient = async () => {
-        const patient = await patientService.getPatient(id);
-        setPatient(patient);
-        console.log(patient);
-      };
-      void fetchPatient();
-    }, []);
+    const fetchDiagnoses = async () => {
+      const diagnoses = await diagnosesService.getAll();
+      setDiagnoses(diagnoses);
+    };
+    void fetchDiagnoses();
+  }, []);
+
+  const getDiagnosisName = (dCode:string) => {
+    const diagnose = diagnoses?.find(d => d.code === dCode);
+    return diagnose ? diagnose.name : "not found";
+  };
+
+
   return (
     <div>
       <h1>{patient && patient.name}</h1>
@@ -28,13 +37,13 @@ const PatientPage = () => {
       <p>occupation: {patient && patient.occupation}</p>
       <h2>entries</h2>
       {patient?.entries.map((e) => (
-        <div>
+        <div key={e.id}>
           <p>
             {e.date} {e.description}
           </p>
           <ul>
-            {e.diagnosisCodes?.map((diagnose) => (
-              <li>{diagnose}</li>
+            {e.diagnosisCodes?.map((diagnoseCode) => (
+              <li key={diagnoseCode}>{diagnoseCode} {getDiagnosisName(diagnoseCode)} </li>
             ))}
           </ul>
         </div>
